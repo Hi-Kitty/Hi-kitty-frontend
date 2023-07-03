@@ -9,7 +9,7 @@ export const globalStyles = (
         background-color: #f4f4f4;
         font-size: 11px;
         -webkit-text-size-adjust: none;
-        font-family: -apple-system, BlinkMacSystemFont, helvetica, Apple SD Gothic Neo, sans-serif;
+        font-family: 'Pretendard';
         font-display: fallback;
 
         -ms-overflow-style: none;
