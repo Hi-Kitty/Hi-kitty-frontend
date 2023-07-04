@@ -1,73 +1,184 @@
 import styled from '@emotion/styled';
-import Header from '../../components/Layout/Header';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Input from '../../components/Input';
-import { colors } from '../../styles/colors';
 import BottomButton from '../../components/BottomButton';
-import { ChangeEvent, useCallback, useState } from 'react';
+import Header from '../../components/Layout/Header';
+import { colors } from '../../styles/colors';
+import SignUpBox from '../../components/Signup/Box';
+import instance from '../../api/axios';
 
 export default function Signup() {
+  const router = useRouter();
+  const [mode, setMode] = useState<'ROLE_DONER' | 'ROLE_FUNDRAISER'>('ROLE_DONER');
+  const [nickname, setNickname] = useState({ value: '', text: '', hidden: true });
+  const [password, setPassword] = useState({ value: '', text: '', hidden: true });
+  const [passwordCheck, setPasswordCheck] = useState({ value: '', text: '', hidden: true });
+  const [email, setEmail] = useState({ value: '', text: '', hidden: true });
+
+  const onChangePasswordCheck = (e: any) => {
+    setPasswordCheck({
+      value: e.target.value,
+      text: '',
+      hidden: e.target.value === password.value,
+    });
+  };
+
+  const checkName = (value: string) => {
+    if (value.length === 0 || value === '') {
+      setNickname({ value: value, text: '닉네임을 입력해주세요.', hidden: false });
+      return;
+    }
+
+    let checkKor = /^[가-힣a-zA-Z]{2,10}$/;
+    if (!checkKor.test(value)) {
+      setNickname({
+        value: value,
+        text: '한글/영문으로 입력해주세요. (10글자 이하)',
+        hidden: false,
+      });
+      return;
+    }
+    setNickname({ value: value, text: '', hidden: true });
+  };
+
+  const checkPassword = (value: string) => {
+    if (value.length === 0 || value === '') {
+      setPassword({ value: value, text: '비밀번호를 입력해주세요.', hidden: false });
+      return;
+    }
+    let regPass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\S{8,}$/;
+    if (!regPass.test(value)) {
+      setPassword({
+        value: value,
+        text: '공백없이 숫자, 대문자, 소문자가 하나씩 포함되어야 합니다. (8글자 이상)',
+        hidden: false,
+      });
+      return;
+    }
+    setPassword({ value: value, text: '', hidden: true });
+  };
+
+  const checkEmail = (value: string) => {
+    if (value.length === 0 || value === '') {
+      setEmail({ value: value, text: '이메일을 입력해주세요.', hidden: false });
+      return;
+    }
+    const emailRegex = /^[A-Za-z0-9]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value) || !(value.length >= 5)) {
+      setEmail({ value: value, text: '이메일 주소를 정확히 입력해주세요.', hidden: false });
+      return;
+    }
+    setEmail({ value: value, text: '', hidden: true });
+  };
+
+  const isButtonDisabled =
+    email.hidden &&
+    nickname.hidden &&
+    password.hidden &&
+    passwordCheck.hidden &&
+    email.value !== '' &&
+    nickname.value !== '' &&
+    password.value !== '' &&
+    passwordCheck.value !== '' &&
+    password.value === passwordCheck.value;
+
   return (
     <Container>
       <Header />
-      <ContentBox>
+      <Box>
         <ChoiceBoxWrapper>
-          <ChoiceBox>
-            <ChoiceBoxClick>
-              <Image src="/images/Cat.svg" width={78} height={50} alt="logo" />
-              <MemberName>모금자</MemberName>
-            </ChoiceBoxClick>
-          </ChoiceBox>
-          <ChoiceBox>
-            <ChoiceBoxClick>
-              <Image src="/images/People.svg" width={78} height={50} alt="logo" />
-              <MemberName>후원자</MemberName>
-            </ChoiceBoxClick>
-          </ChoiceBox>
+          <SignUpBox mode={mode} setMode={setMode} />
         </ChoiceBoxWrapper>
-        <InputBoxWrapper>
-          <InputBox>
-            <InputList>
-              <Name>닉네임</Name>
-              <Input type={'nickname'} placeholder={'닉네임'} name={'nickname'} />
-            </InputList>
-
-            <InputList>
-              <Name>이메일 주소</Name>
-              <Input type={'email'} placeholder={'kitty@kitty.co.kr'} name={'email'} />
-            </InputList>
-
-            <InputList>
-              <Name>비밀번호</Name>
-              <Input type={'password'} placeholder={'8자 이상'} name={'password'} />
-            </InputList>
-
-            <InputList>
-              <Name>비밀번호 확인</Name>
-              <Input type={'password'} placeholder={'8자 이상'} name={'password'} />
-            </InputList>
-          </InputBox>
-        </InputBoxWrapper>
-        <BottomButton
-          title={'다음'}
-          width={'100%'}
-          height={'59px'}
-          backgroundColor={'${colors.pink500}'}
-          hoverFontColor={'${colors.white}'}
-          marginTop="231px"
-          position="static"
-          // disabled={disabled}
-          // onClick={onClick}
-        />
-      </ContentBox>
+        <InputBox>
+          <Name style={{ color: !email.hidden ? colors.red400 : colors.black }}>이메일</Name>
+          <Input
+            id="email"
+            type={'email'}
+            placeholder="예) kitty@kitty.co.kr"
+            defaultValue={email.value}
+            onChange={(e: any) => checkEmail(e.target.value)}
+          />
+          <HiddenMessage hidden={email.hidden}>{email.text}</HiddenMessage>
+        </InputBox>
+        <InputBox>
+          <Name style={{ color: !nickname.hidden ? colors.red400 : colors.black }}>
+            닉네임
+            <Input
+              id="id"
+              type={'text'}
+              defaultValue={nickname.value}
+              onChange={(e: any) => checkName(e.target.value)}
+            />
+            <HiddenMessage hidden={nickname.hidden}>{nickname.text}</HiddenMessage>
+          </Name>
+        </InputBox>
+        <InputBox>
+          <Name style={{ color: !password.hidden ? colors.red400 : colors.black }}>
+            비밀번호
+            <Input
+              id="password"
+              type={'password'}
+              defaultValue={password.value}
+              onChange={(e: any) => checkPassword(e.target.value)}
+            />
+            <HiddenMessage hidden={password.hidden}>{password.text}</HiddenMessage>
+          </Name>
+        </InputBox>
+        <InputBox>
+          <Name style={{ color: !passwordCheck.hidden ? colors.red400 : colors.black }}>
+            비밀번호 확인
+            <Input
+              id="password-check"
+              type={'password'}
+              defaultValue={passwordCheck.value}
+              onChange={onChangePasswordCheck}
+            />
+            <HiddenMessage hidden={passwordCheck.hidden}>{passwordCheck.text}</HiddenMessage>
+          </Name>
+          {!passwordCheck.hidden && <HiddenMessage>비밀번호가 일치하지 않습니다.</HiddenMessage>}
+        </InputBox>
+        <ButtonBox>
+          <BottomButton
+            title={'회원가입'}
+            width={'100%'}
+            height={'59px'}
+            backgroundColor={'${colors.pink500}'}
+            hoverFontColor={'${colors.white}'}
+            disabled={!isButtonDisabled}
+            onClick={() => {
+              instance
+                .post('/users', {
+                  email: email.value,
+                  name: nickname.value,
+                  password: password.value,
+                  role: mode,
+                })
+                .then(res => {
+                  if (res.data.success) {
+                    console.log(res.data.message);
+                    router.push(`/signup/success`);
+                  } else {
+                    console.log(res.data.message);
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          />
+        </ButtonBox>
+      </Box>
     </Container>
   );
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin: 0 auto;
+  width: 400px;
+`;
 
-const ContentBox = styled.div`
+const Box = styled.div`
   display: block;
   justify-content: center;
 `;
@@ -77,67 +188,33 @@ const ChoiceBoxWrapper = styled.div`
   margin-left: 20px;
 `;
 
-const ChoiceBox = styled.div`
-  display: flex;
-  margin: 30px;
-`;
-
-const ChoiceBoxClick = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 10px;
-  align-items: center;
-  width: 130px;
-  height: 124px;
-  border-radius: 5px;
-  border: 1.2px solid ${colors.gray500};
-  opacity: 0.7;
-  cursor: pointer;
-
-  &:hover {
-    transition: 0.3s ease-in-out all;
-    opacity: 1;
-  }
-`;
-
-const MemberName = styled.div`
-  color: #000;
-  font-size: 17px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 200%;
-  padding-top: 10px;
-`;
-
-const InputBoxWrapper = styled.div`
-  display: flex;
-  top: 100px;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 40px;
-  margin-bottom: 30px;
-`;
-
 const InputBox = styled.div`
-  width: auto;
+  box-sizing: border-box;
   position: relative;
+  padding-bottom: 25px;
+  margin-left: 10px;
 `;
 
-const InputList = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 35px;
-  margin-left: 20px;
-
-  & input {
-    height: 40px;
-  }
+const Name = styled.span`
+  font-size: 13px;
+  font-weight: 640;
+  line-height: 18px;
 `;
 
-const Name = styled.div`
-  color: #000;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 200%;
+const HiddenMessage = styled.span`
+  display: block;
+  position: absolute;
+  line-height: 16px;
+  letter-spacing: -0.4px;
+  font-size: 11px;
+  color: ${colors.red400};
+  font-weight: 300;
+`;
+
+const ButtonBox = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 420px;
+  margin-left: -10px;
 `;

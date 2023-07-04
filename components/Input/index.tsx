@@ -3,7 +3,7 @@ import React, { HTMLInputTypeAttribute } from 'react';
 
 export interface InputProps {
   type: HTMLInputTypeAttribute;
-  name: string;
+  name?: string;
   placeholder?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
