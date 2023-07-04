@@ -5,6 +5,7 @@ import Header from '../../components/Layout/Header';
 import Input from '../../components/Input';
 import BottomButton from '../../components/BottomButton';
 import { useState } from 'react';
+import { css } from '@emotion/react';
 
 export default function Login() {
   const [userid, setUserId] = useState({ value: '', text: '', hidden: true });
@@ -35,7 +36,7 @@ export default function Login() {
           <Content>
             <KittyLogo>HI KITTY</KittyLogo>
             <InputBox>
-              <TitleName font-color={!userid.hidden ? 'red' : 'black'}>이메일 주소</TitleName>
+              <TitleName style={{ color: !userid.hidden ? 'red' : 'black' }}>이메일 주소</TitleName>
               <InputItem>
                 <Input
                   id="id"
@@ -50,7 +51,7 @@ export default function Login() {
               </ErrorMsg>
             </InputBox>
             <InputBox>
-              <TitleName color={!userPassword.hidden ? 'red' : 'black'}>비밀번호</TitleName>
+              <TitleName style={{ color: !userPassword.hidden ? 'red' : 'black' }}>비밀번호</TitleName>
               <InputItem>
                 <Input
                   id="password"
