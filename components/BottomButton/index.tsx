@@ -11,6 +11,7 @@ export interface ButtonProps {
   hoverFontColor?: string;
   position?: string;
   disabled?: boolean;
+  borderRadius?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -27,6 +28,7 @@ export default function BottomButton({
   disabled = false,
   onClick,
   onChange,
+  borderRadius,
 }: ButtonProps) {
   return (
     <Button
@@ -40,6 +42,7 @@ export default function BottomButton({
       position={position}
       disabled={disabled}
       onClick={onClick}
+      borderRadius={borderRadius}
     >
       {title}
     </Button>
@@ -61,6 +64,7 @@ const Button = styled.button<ButtonProps>`
   margin-bottom: ${({ marginBottom }) => marginBottom ?? '0'};
   position: ${({ position }) => position ?? 'static'};
   cursor: ${({ disabled }): string => (disabled ? 'not-allowed' : 'pointer')};
+  border-radius: ${({ borderRadius }) => borderRadius ?? '0px'};
 
   :hover {
     opacity: 1;

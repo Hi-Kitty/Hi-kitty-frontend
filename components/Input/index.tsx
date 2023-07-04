@@ -10,6 +10,8 @@ export interface InputProps {
   width?: string;
   height?: string;
   marginBottom?: string;
+  defaultValue?: string;
+  id?: string;
 }
 
 export default function Input({ type, placeholder, value, onChange, ...props }: InputProps) {
@@ -18,8 +20,8 @@ export default function Input({ type, placeholder, value, onChange, ...props }: 
 
 const StyleInput = styled.input<InputProps>`
   padding-left: 0.2rem;
-  width: ${({ width }) => width ?? '30rem'};
-  height: ${({ height }) => height ?? '3rem'};
+  width: ${({ width }) => width ?? '34rem'};
+  height: ${({ height }) => height ?? '4rem'};
   margin-bottom: ${({ marginBottom }) => marginBottom ?? '0'};
   border: none;
   border-bottom: 0.1rem solid #dcdce0;

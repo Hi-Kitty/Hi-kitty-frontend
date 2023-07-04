@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <Container>
       <LeftBox>
-        <KittyLogo>HI KITTY</KittyLogo>
+        <KittyLogo href="/">HI KITTY</KittyLogo>
       </LeftBox>
     </Container>
   );
@@ -43,4 +43,5 @@ const KittyLogo = styled.a`
   line-height: 20px;
   letter-spacing: 0.16px;
   cursor: pointer;
+  text-decoration: none;
 `;

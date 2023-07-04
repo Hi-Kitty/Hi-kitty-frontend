@@ -30,24 +30,27 @@ export default function Signup() {
           <InputBox>
             <InputList>
               <Name>닉네임</Name>
-              <Input type={'nickname'} placeholder={'닉네임'} name={'email'} width={'42rem'} height={'4rem'} />
+              <Input type={'nickname'} placeholder={'닉네임'} name={'nickname'} />
             </InputList>
+
             <InputList>
               <Name>이메일 주소</Name>
-              <Input type={'email'} placeholder={'kitty@kitty.co.kr'} name={'email'} width={'42rem'} height={'4rem'} />
+              <Input type={'email'} placeholder={'kitty@kitty.co.kr'} name={'email'} />
             </InputList>
+
             <InputList>
               <Name>비밀번호</Name>
-              <Input type={'password'} placeholder={'8자 이상'} name={'email'} width={'42rem'} height={'4rem'} />
+              <Input type={'password'} placeholder={'8자 이상'} name={'password'} />
             </InputList>
+
             <InputList>
               <Name>비밀번호 확인</Name>
-              <Input type={'password'} placeholder={'8자 이상'} name={'email'} width={'42rem'} height={'4rem'} />
+              <Input type={'password'} placeholder={'8자 이상'} name={'password'} />
             </InputList>
           </InputBox>
         </InputBoxWrapper>
         <BottomButton
-          title={'회원가입'}
+          title={'다음'}
           width={'100%'}
           height={'59px'}
           backgroundColor={'${colors.pink500}'}
@@ -125,10 +128,9 @@ const InputList = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 35px;
-  margin-left: 30px;
+  margin-left: 20px;
 
   & input {
-    width: 350px;
     height: 40px;
   }
 `;
