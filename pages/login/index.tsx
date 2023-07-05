@@ -5,6 +5,9 @@ import Header from '../../components/Layout/Header';
 import Input from '../../components/Input';
 import BottomButton from '../../components/BottomButton';
 import { useState } from 'react';
+import { useMutation } from 'react-query';
+import { postLogin } from '../../api/auth/loginAPI';
+import { saveAccessTokenToLocalStorage } from '../../utils/accessTokenHandler';
 
 export default function Login() {
   const [userid, setUserId] = useState({ value: '', text: '', hidden: true });
@@ -25,6 +28,30 @@ export default function Login() {
       return;
     }
     setUserPassword({ value: value, text: '', hidden: true });
+  };
+
+  const isButtonDisabled =
+    userid.value.length < 8 || !userid.value.includes('@') || !userid.value.includes('.') || !userPassword.value;
+
+  const { mutate: login } = useMutation(() => postLogin(userid.value, userPassword.value), {
+    onSuccess: res => {
+      const { accessToken } = res.data;
+      saveAccessTokenToLocalStorage(accessToken);
+      router.push('/');
+    },
+    onError: err => {
+      console.log(`실패 ${err}`);
+    },
+  });
+
+  console.log(userid.value, userPassword.value);
+
+  const handleLogin = (): void => {
+    login();
+  };
+
+  const handleSignup = () => {
+    router.push('/signup');
   };
 
   return (
@@ -64,10 +91,10 @@ export default function Login() {
               </ErrorMsg>
             </InputBox>
           </Content>
-          <BottomButton title={'로그인'} borderRadius="8px" />
+          <BottomButton title={'로그인'} borderRadius="8px" disabled={isButtonDisabled} onClick={handleLogin} />
           <SignupBox>
             <span>아직 회원이 아니신가요?</span>
-            <span onClick={() => router.push('/signup')}>회원가입</span>
+            <span onClick={handleSignup}>회원가입</span>
           </SignupBox>
         </ContentWrapper>
       </Container>
