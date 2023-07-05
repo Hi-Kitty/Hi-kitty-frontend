@@ -16,6 +16,10 @@ export const globalStyles = (
         scrollbar-width: none;
         display: flex;
         justify-content: center;
+
+        ::-webkit-scrollbar {
+          display: none;
+        }
       }
     `}
   />
