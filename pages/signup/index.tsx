@@ -83,6 +83,27 @@ export default function Signup() {
     passwordCheck.value !== '' &&
     password.value === passwordCheck.value;
 
+  const handleSignup = () => {
+    instance
+      .post('/users', {
+        email: email.value,
+        name: nickname.value,
+        password: password.value,
+        role: mode,
+      })
+      .then(res => {
+        if (res.data.success) {
+          console.log(res.data.message);
+          router.push(`/signup/success`);
+        } else {
+          console.log(res.data.message);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <Container>
       <Header />
@@ -146,26 +167,7 @@ export default function Signup() {
             backgroundColor={'${colors.pink500}'}
             hoverFontColor={'${colors.white}'}
             disabled={!isButtonDisabled}
-            onClick={() => {
-              instance
-                .post('/users', {
-                  email: email.value,
-                  name: nickname.value,
-                  password: password.value,
-                  role: mode,
-                })
-                .then(res => {
-                  if (res.data.success) {
-                    console.log(res.data.message);
-                    router.push(`/signup/success`);
-                  } else {
-                    console.log(res.data.message);
-                  }
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
+            onClick={handleSignup}
           />
         </ButtonBox>
       </Box>
