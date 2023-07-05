@@ -9,21 +9,30 @@ export default function PostCard({ list }: { list: AllPostResponse }) {
   const router = useRouter();
 
   return (
-    <Container onClick={() => router.push(`/detail/${id}`)}>
-      <ImgBox>
-        <CardImg img={imageUrl} />
-      </ImgBox>
-      <Content>
-        <DdayBox>
-          <span>D-{dday}</span>
-        </DdayBox>
-        <Title>{title.length < 34 ? title : title.slice(0, 35) + '...'}</Title>
-        <Organization>{fundraiserName}</Organization>
-        <PercentBox>
-          <span>{percent}%</span>
-        </PercentBox>
-      </Content>
-    </Container>
+    <ContainerWrapper onClick={() => router.push(`/detail/${id}`)}>
+      <Container>
+        <ContentWrapper>
+          <RealContent>
+            <ImgBox>
+              <CardImg img={imageUrl} />
+            </ImgBox>
+            <Content>
+              <DdayBox>
+                <span>D-{dday}</span>
+              </DdayBox>
+              <Title>{title.length < 34 ? title : title.slice(0, 35) + '...'}</Title>
+              <Organization>{fundraiserName}</Organization>
+              <PercentBox>
+                <PercentContent>
+                  <ProgressBar value={percent} max="100" />
+                  <span>{percent}%</span>
+                </PercentContent>
+              </PercentBox>
+            </Content>
+          </RealContent>
+        </ContentWrapper>
+      </Container>
+    </ContainerWrapper>
   );
 }
 
@@ -33,7 +42,7 @@ const ContainerWrapper = styled.div`
   opacity: 0.8;
 
   &:hover {
-    transform: translateY(-2.5px);
+    transform: translateY(-4px);
     transition: 0.3s ease-in-out all;
     opacity: 1;
   }
@@ -103,9 +112,10 @@ const Organization = styled.div`
 
 const PercentBox = styled.div`
   display: flex;
-  align-items: center;
-  gap: 3px;
   font-size: 16px;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  margin-top: -10px;
 
   span {
     color: ${colors.gray800};
@@ -114,5 +124,31 @@ const PercentBox = styled.div`
     font-weight: 600;
     line-height: 140%;
     letter-spacing: -0.056px;
+  }
+`;
+
+const PercentContent = styled.div`
+  width: 100%;
+  display: contents;
+`;
+
+const ProgressBar = styled.progress`
+  width: 100%;
+  height: 5px;
+  border-radius: 5px;
+  appearance: none;
+  background-color: ${colors.gray300};
+  color: ${colors.gray300};
+  border: none;
+  outline: none;
+
+  &::-webkit-progress-bar {
+    background-color: ${colors.gray300};
+    border-radius: 5px;
+  }
+
+  &::-webkit-progress-value {
+    background-color: ${colors.gray900};
+    border-radius: 5px;
   }
 `;
