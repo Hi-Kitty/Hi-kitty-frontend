@@ -7,6 +7,6 @@ export const getForumAll = async (page: number = 0, size: number = 10) => {
 };
 
 export const getForumContent = async (boardId: number) => {
-  const { data: response } = await instance.get<DetailPostResponse>(`/boards/${boardId}`);
-  return response;
+  const { data } = await instance.get<DetailPostResponse>(`/boards/${boardId}`);
+  return data;
 };
