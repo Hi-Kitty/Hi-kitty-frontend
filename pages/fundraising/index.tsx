@@ -36,7 +36,6 @@ export default function Fundraising() {
         <ContentBox>
           {ForumData
             ? ForumData.map((list: AllPostResponse) => {
-                console.log(list.id);
                 if (list.id !== null) {
                   return <PostCard list={list} key={list.id} />;
                 }
