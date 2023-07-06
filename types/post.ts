@@ -1,5 +1,4 @@
 // 게시판 전체 조회
-
 export type RootResponse<T> = {
   error: any;
   response: T;
@@ -24,7 +23,7 @@ export interface AllPostResponse {
   title: string;
   fundraiserId: number;
   fundraiserName: string;
-  percent: string;
+  percent: number;
   imageId: number;
   imageUrl: string;
   imageName: string;
