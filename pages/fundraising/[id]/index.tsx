@@ -2,16 +2,16 @@ import styled from '@emotion/styled';
 import Loading from '../../../components/Loading';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import ProgressBar from '../../../components/ProgressBar';
 import { colors } from '../../../styles/colors';
 import useGetForumDetail from '../../../hooks/fundraising/useGetForumDetail';
 import { useMemo } from 'react';
 import Body from '../../../components/Fundraising/Detail/Body';
 import { PlanResponse } from '../../../types/post';
-import convertDateYear from '../../../utils/convertDateYear';
 import Plan from '../../../components/Fundraising/Detail/Plan';
 import BottomButton from '../../../components/BottomButton';
 import Heart from '../../../components/Fundraising/Detail/Heart';
+import Team from '../../../components/Fundraising/Detail/Team';
+import Head from '../../../components/Fundraising/Detail/Head';
 
 export default function Detail() {
   const router = useRouter();
@@ -38,44 +38,37 @@ export default function Detail() {
           onClick={() => router.back()}
         />
       </TopContainer>
-      <ContentWrapper>
-        <ContentBox>
-          <Content>
-            <Article>
-              <BackgroundImg style={{ backgroundImage: `url(${data?.imageUrl})` }}>
-                <TitleNameBox>
-                  <TitleName>{data?.subTitle}</TitleName>
-                  <span>{data?.fundraiserName}</span>
-                </TitleNameBox>
-              </BackgroundImg>
-            </Article>
-            <DateContainer>
-              <DateTitle>
-                모금기간 : {convertDateYear(String(data?.createAt))} ~ {convertDateYear(String(data?.endAt))}
-              </DateTitle>
-            </DateContainer>
-            <AmountContainer>
-              <AmountContent>
-                <Amount>{data?.currentAmount}원</Amount>
-                <ProgressBar percent={Number(data?.percent ?? '0')} marginBottom="3px" />
-                <TargetAmount>{data?.targetAmount}원</TargetAmount>
-              </AmountContent>
-            </AmountContainer>
-          </Content>
-        </ContentBox>
-      </ContentWrapper>
-      <Body subTitle={data?.subTitle ?? ''} content={data?.content ?? ''} />
-      <PlanContainer>
-        <h3>모금 사용계획</h3>
-        {data?.planResponse?.map((list: PlanResponse) => {
-          return <Plan key={list.id} reason={list.reason} amount={list.amount} />;
-        })}
-      </PlanContainer>
-      <HeartContainer>
-        <h3>나눔 하트</h3>
-        <Heart />
-      </HeartContainer>
-      <BottomButton title={'후원하기'} width="100%" height="68px" opacity={0.95} />
+      {data.id !== undefined && data.content !== undefined ? (
+        <>
+          <Head
+            title={data?.title ?? ''}
+            fundraiserName={data?.fundraiserName ?? ''}
+            imageUrl={data?.imageUrl ?? ''}
+            createAt={data?.createAt ?? ''}
+            endAt={data?.endAt ?? ''}
+            currentAmount={data?.currentAmount ?? 0}
+            percent={data?.percent ?? 0}
+            targetAmount={data?.targetAmount ?? 0}
+          />
+          <Body subTitle={data?.subTitle ?? ''} content={data?.content ?? ''} />
+          <PlanContainer>
+            <h3>모금 사용계획</h3>
+            {data?.planResponse?.map((list: PlanResponse) => {
+              return <Plan key={list.id} reason={list.reason} amount={list.amount} />;
+            })}
+          </PlanContainer>
+          <TeamContainer>
+            <Team imgUrl={data.imageUrl} fundraiserName={data?.fundraiserName ?? ''} />
+          </TeamContainer>
+          <HeartContainer>
+            <h3>나눔 하트</h3>
+            <Heart />
+          </HeartContainer>
+          <BottomButton title={'후원하기'} width="100%" height="68px" opacity={0.95} />
+        </>
+      ) : (
+        <Loading />
+      )}
     </Container>
   );
 }
@@ -98,122 +91,27 @@ const TopContainer = styled.div`
   opacity: 0.3;
 `;
 
-const ContentWrapper = styled.div``;
-
-const ContentBox = styled.div`
-  background-color: #fff;
-  margin-bottom: -150px;
-`;
-const Content = styled.div`
-  margin-bottom: 60px;
-  display: block;
-`;
-
-const Article = styled.div`
-  height: 280px;
-  margin-bottom: 25px;
-  position: relative;
-  width: 100%;
-  display: block;
-`;
-
-const BackgroundImg = styled.div`
-  background-size: cover;
-  background-position: center;
-  display: table;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-color: #666;
-  background-position: 50% 50%;
-  table-layout: fixed;
-`;
-
-const TitleNameBox = styled.div`
-  display: table-cell;
-  position: relative;
-  z-index: 20;
-  text-align: center;
-  vertical-align: middle;
-
-  span {
-    width: auto;
-    font-size: 14px;
-    opacity: 0.8;
-    max-height: 55px;
-    color: ${colors.white};
-  }
-`;
-
-const TitleName = styled.h3`
-  margin-bottom: 11px;
-  padding: 0 30px;
-  font-size: 24px;
-  line-height: 31px;
-  max-height: 100px;
-  margin: auto;
-  font-weight: 400;
-  color: ${colors.white};
-`;
-
-const DateContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-`;
-
-const DateTitle = styled.p`
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 5px;
-`;
-
-const AmountContainer = styled.div`
-  width: 100%;
-  position: relative;
-  box-sizing: border-box;
-  border-bottom-color: 1px solid ${colors.gray300};
-`;
-
-const AmountContent = styled.div`
-  padding: 20px;
-  word-break: break-all;
-  vertical-align: top;
-`;
-
-const Amount = styled.p`
-  font-size: 20px;
-  font-weight: 600;
-  color: ${colors.gray900};
-  letter-spacing: -0.08px;
-`;
-
-const TargetAmount = styled.p`
-  font-size: 14px;
-  color: ${colors.gray600};
-  margin-top: 5px;
-  float: right;
-  font-weight: 400;
-  line-height: 140%;
-  letter-spacing: -0.052px;
-  padding-bottom: 40px;
-`;
-
 const PlanContainer = styled.div`
   width: 100%;
   position: relative;
   box-sizing: border-box;
   border-bottom-color: 1px solid ${colors.gray300};
   border-top-color: 1px solid ${colors.gray300};
-  padding: 30px 20px 35px 20px;
+  padding: 30px 20px 5px 20px;
 
   h3 {
     letter-spacing: -0.07px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     line-height: 2;
-    margin-bottom: 20px;
   }
+`;
+const TeamContainer = styled.div`
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  border-bottom-color: 1px solid ${colors.gray300};
+  padding: 30px 20px 25px 20px;
 `;
 
 const HeartContainer = styled.div`

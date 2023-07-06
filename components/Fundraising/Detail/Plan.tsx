@@ -38,7 +38,7 @@ const PlanList = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 0px 0;
   font-size: 14px;
   color: #666666;
   line-height: 1.875;

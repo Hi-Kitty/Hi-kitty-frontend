@@ -1,3 +1,8 @@
 export default function commaNumber(num: number) {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  // cannot read properties of undefined toString
+  if (num === undefined) return 0;
+  return num
+    .toFixed(0)
+    .replace(',', ',')
+    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
