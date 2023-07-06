@@ -1,14 +1,9 @@
 import instance from '../axios';
-import { DetailPostResponse, Response } from '../../types/post';
+import { DetailPostResponse, Response, RootResponse } from '../../types/post';
 
-export const getForumAll = async () => {
-  const { data: response } = await instance.get<Response>(`/boards`, {
-    params: {
-      page: 0,
-      size: 10,
-    },
-  });
-  return response.content;
+export const getForumAll = async (page: number = 0, size: number = 10) => {
+  const { data } = await instance.get<RootResponse<Response>>(`boards?page=0&size=10`);
+  return data;
 };
 
 export const getForumContent = async (boardId: number) => {

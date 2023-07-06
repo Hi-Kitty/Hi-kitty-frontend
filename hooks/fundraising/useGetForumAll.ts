@@ -2,13 +2,13 @@ import { useQuery } from 'react-query';
 import { getForumAll } from '../../api/fundraising/main';
 
 export default function useGetForumAll() {
-  const { data: ForumData } = useQuery({
+  return useQuery({
     // refetchInterval: 1000,
     queryKey: ['board'],
-    queryFn: () => {
-      return getForumAll();
+    queryFn: async () => {
+      const data = await getForumAll();
+      console.log('ForumData', data);
+      return data;
     },
   });
-
-  return { ForumData: ForumData };
 }

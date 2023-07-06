@@ -5,10 +5,15 @@ import useGetForumAll from '../../hooks/fundraising/useGetForumAll';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { AllPostResponse } from '../../types/post';
+import { useMemo } from 'react';
 
 export default function Fundraising() {
   const router = useRouter();
-  const { ForumData } = useGetForumAll();
+  const { data } = useGetForumAll();
+
+  const ForumData = useMemo(() => {
+    return data?.response?.content ?? [];
+  }, [data]);
 
   if (ForumData === undefined) {
     return <Loading />;
@@ -31,6 +36,7 @@ export default function Fundraising() {
         <ContentBox>
           {ForumData
             ? ForumData.map((list: AllPostResponse) => {
+                console.log(list.id);
                 if (list.id !== null) {
                   return <PostCard list={list} key={list.id} />;
                 }
@@ -56,9 +62,11 @@ const TopContainer = styled.div`
   background: #ffffff;
   box-sizing: border-box;
   width: 420px;
+  z-index: 20;
 `;
 
 const ContentWrapper = styled.div`
+  border-top: 12px solid #f2f4f6;
   display: flex;
   justify-content: center;
   background-color: #fff;
@@ -69,6 +77,7 @@ const ContentBox = styled.div`
   flex-direction: column;
   justify-content: center;
   padding-top: 55px;
+
   max-width: 420px;
   width: 100%;
   background-color: #fff;
