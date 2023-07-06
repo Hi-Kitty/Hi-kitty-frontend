@@ -12,6 +12,7 @@ export interface ButtonProps {
   position?: string;
   disabled?: boolean;
   borderRadius?: string;
+  opacity?: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -29,6 +30,7 @@ export default function BottomButton({
   onClick,
   onChange,
   borderRadius,
+  opacity,
 }: ButtonProps) {
   return (
     <Button
@@ -43,6 +45,7 @@ export default function BottomButton({
       disabled={disabled}
       onClick={onClick}
       borderRadius={borderRadius}
+      opacity={opacity}
     >
       {title}
     </Button>
@@ -54,7 +57,6 @@ const Button = styled.button<ButtonProps>`
   width: ${({ width }) => width ?? '34rem'};
   height: ${({ height }) => height ?? '4rem'};
   background-color: ${({ disabled }): string => (disabled ? colors.gray100 : colors.pink500)};
-  opacity: 0.85;
   border: none;
   border-radius: 0px;
   color: ${({ disabled }): string => (disabled ? colors.white : colors.white)};
@@ -65,6 +67,7 @@ const Button = styled.button<ButtonProps>`
   position: ${({ position }) => position ?? 'static'};
   cursor: ${({ disabled }): string => (disabled ? 'not-allowed' : 'pointer')};
   border-radius: ${({ borderRadius }) => borderRadius ?? '0px'};
+  opacity: ${({ opacity }) => opacity ?? 0.85};
 
   :hover {
     opacity: 1;

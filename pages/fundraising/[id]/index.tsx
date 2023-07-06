@@ -10,6 +10,8 @@ import Body from '../../../components/Fundraising/Detail/Body';
 import { PlanResponse } from '../../../types/post';
 import convertDateYear from '../../../utils/convertDateYear';
 import Plan from '../../../components/Fundraising/Detail/Plan';
+import BottomButton from '../../../components/BottomButton';
+import Heart from '../../../components/Fundraising/Detail/Heart';
 
 export default function Detail() {
   const router = useRouter();
@@ -69,6 +71,11 @@ export default function Detail() {
           return <Plan key={list.id} reason={list.reason} amount={list.amount} />;
         })}
       </PlanContainer>
+      <HeartContainer>
+        <h3>나눔 하트</h3>
+        <Heart />
+      </HeartContainer>
+      <BottomButton title={'후원하기'} width="100%" height="68px" opacity={0.95} />
     </Container>
   );
 }
@@ -76,7 +83,6 @@ export default function Detail() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding-bottom: 70px;
   background-color: white;
   justify-content: space-between;
 `;
@@ -207,5 +213,19 @@ const PlanContainer = styled.div`
     font-weight: 500;
     line-height: 2;
     margin-bottom: 20px;
+  }
+`;
+
+const HeartContainer = styled.div`
+  display: inline-block;
+  position: relative;
+  padding: 40px 0 15px 20px;
+  width: 100%;
+  border-top: 1px solid ${colors.gray300};
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 7px;
   }
 `;
