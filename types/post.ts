@@ -1,5 +1,10 @@
 // 게시판 전체 조회
 
+export type RootResponse<T> = {
+  error: any;
+  response: T;
+  success: boolean;
+};
 export interface Response {
   content: AllPostResponse[];
   pageable: Pageable;
@@ -19,7 +24,7 @@ export interface AllPostResponse {
   title: string;
   fundraiserId: number;
   fundraiserName: string;
-  percent: number;
+  percent: string;
   imageId: number;
   imageUrl: string;
   imageName: string;
