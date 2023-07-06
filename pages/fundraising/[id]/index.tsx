@@ -64,7 +64,9 @@ export default function Detail() {
             <h3>나눔 하트</h3>
             <Heart />
           </HeartContainer>
-          <BottomButton title={'후원하기'} width="100%" height="68px" opacity={0.95} />
+          <ButtonBox>
+            <BottomButton title={'후원하기'} width="100%" height="68px" opacity={0.95} />
+          </ButtonBox>
         </>
       ) : (
         <Loading />
@@ -126,4 +128,11 @@ const HeartContainer = styled.div`
     font-weight: 500;
     margin-bottom: 7px;
   }
+`;
+
+const ButtonBox = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 420px;
 `;
