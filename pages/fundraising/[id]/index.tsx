@@ -80,6 +80,7 @@ const Container = styled.div`
   flex-direction: column;
   background-color: white;
   justify-content: space-between;
+  padding-bottom: 70px;
 `;
 
 const TopContainer = styled.div`

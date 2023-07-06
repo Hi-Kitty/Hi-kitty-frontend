@@ -34,13 +34,15 @@ export default function Fundraising() {
       </TopContainer>
       <ContentWrapper>
         <ContentBox>
-          {ForumData
-            ? ForumData.map((list: AllPostResponse) => {
-                if (list.id !== null) {
-                  return <PostCard list={list} key={list.id} />;
-                }
-              })
-            : '없음'}
+          {ForumData !== undefined && ForumData.length > 0 && ForumData !== null ? (
+            ForumData.map((list: AllPostResponse) => {
+              if (list.id !== null) {
+                return <PostCard list={list} key={list.id} />;
+              }
+            })
+          ) : (
+            <Loading />
+          )}
         </ContentBox>
       </ContentWrapper>
     </Container>
