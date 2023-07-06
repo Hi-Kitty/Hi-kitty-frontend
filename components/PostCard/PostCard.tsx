@@ -9,12 +9,12 @@ export default function PostCard({ list }: { list: AllPostResponse }) {
   const router = useRouter();
 
   return (
-    <ContainerWrapper onClick={() => router.push(`/detail/${id}`)}>
+    <ContainerWrapper onClick={() => router.push(`/fundraising/${id}`)}>
       <Container>
         <ContentWrapper>
           <RealContent>
             <ImgBox>
-              <CardImg img={imageUrl} />
+              <CardImg imgUrl={imageUrl} />
             </ImgBox>
             <Content>
               <DdayBox>

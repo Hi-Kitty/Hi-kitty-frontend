@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 
 interface ImgProps {
-  img: string;
+  imgUrl: string;
   height?: string;
 }
 
-export default function CardImg({ img }: ImgProps) {
+export default function CardImg({ imgUrl }: ImgProps) {
   return (
     <CardBox borderRadius={'20px'}>
-      <img src={img} />
+      <img src={imgUrl} />
     </CardBox>
   );
 }
