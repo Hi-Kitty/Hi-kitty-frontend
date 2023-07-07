@@ -1,9 +1,24 @@
 import styled from '@emotion/styled';
 import { colors } from '../../../styles/colors';
+import { useRouter } from 'next/router';
 
-export default function Team({ imgUrl, fundraiserName }: { imgUrl: string; fundraiserName: string }) {
+export default function Team({
+  imgUrl,
+  fundraiserId,
+  fundraiserName,
+}: {
+  imgUrl: string;
+  fundraiserId: number;
+  fundraiserName: string;
+}) {
+  const router = useRouter();
+
+  const handleMoveTeam = () => {
+    router.push(`group/${fundraiserId}`);
+  };
+
   return (
-    <TeamBox>
+    <TeamBox onClick={handleMoveTeam}>
       <TeamImg>
         <img src={imgUrl} />
         <span>{fundraiserName}</span>

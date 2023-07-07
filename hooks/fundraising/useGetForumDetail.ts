@@ -3,7 +3,7 @@ import { getForumContent } from '../../api/fundraising/main';
 
 export default function useGetForumDetail(boardId: number) {
   return useQuery({
-    queryKey: ['board'],
+    queryKey: ['board-detail', String(boardId)],
     queryFn: async () => {
       const data = await getForumContent(boardId);
       console.log('ForumData', data);
