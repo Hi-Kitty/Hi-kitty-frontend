@@ -35,8 +35,8 @@ export default function Login() {
 
   const { mutate: login } = useMutation(() => postLogin(userid.value, userPassword.value), {
     onSuccess: res => {
-      const { accessToken } = res.data;
-      saveAccessTokenToLocalStorage(accessToken);
+      const { token } = res.response;
+      saveAccessTokenToLocalStorage(token);
       router.push('/');
     },
     onError: err => {

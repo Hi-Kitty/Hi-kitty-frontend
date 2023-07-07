@@ -1,11 +1,11 @@
-export const saveAccessTokenToLocalStorage = (accessToken: string) => {
+export const saveAccessTokenToLocalStorage = (token: string) => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('token', token);
   }
 };
 
 export const getAccessTokenFromLocalStorage = () => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('accessToken') || '';
+    return localStorage.getItem('token') || '';
   }
 };
