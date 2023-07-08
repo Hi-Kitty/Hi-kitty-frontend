@@ -63,7 +63,7 @@ export interface DetailPostResponse {
   profileName: string;
   profileUrl: string;
   planResponse: PlanResponse[];
-  heartResponses: any[];
+  heartResponses: HeartResponse[];
   imageOriginalName: string;
   imageUrl: string;
 }
@@ -72,4 +72,13 @@ export interface PlanResponse {
   id: number;
   reason: string;
   amount: number;
+}
+
+export interface HeartResponse {
+  id: number;
+  donerId: number;
+  donerName: string;
+  donerProfileName: string;
+  donerProfileUrl: string;
+  status: string;
 }

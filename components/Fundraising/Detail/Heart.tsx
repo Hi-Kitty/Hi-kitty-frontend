@@ -1,17 +1,15 @@
 import styled from '@emotion/styled';
 import { colors } from '../../../styles/colors';
 
-export default function Heart() {
+export default function Heart({ donerName, donerProfileUrl }: { donerName: string; donerProfileUrl: string }) {
   return (
     <HeartContent>
-      <ul>
-        <li>
-          <span>
-            <img src="/images/cat.svg" alt="heart" />
-          </span>
-          <p>양키티</p>
-        </li>
-      </ul>
+      <li>
+        <span>
+          <img src={donerProfileUrl} />
+        </span>
+        <p>{donerName}</p>
+      </li>
     </HeartContent>
   );
 }
@@ -22,16 +20,6 @@ const HeartContent = styled.div`
 
   ::-webkit-scrollbar {
     display: none;
-  }
-
-  ul {
-    line-height: 2;
-    display: flex;
-    width: 100%;
-    list-style: none;
-    font-size: 18px;
-    color: ${colors.gray900};
-    gap: 7px;
   }
 
   span {

@@ -6,7 +6,7 @@ import { colors } from '../../../styles/colors';
 import useGetForumDetail from '../../../hooks/fundraising/useGetForumDetail';
 import { useEffect, useMemo } from 'react';
 import Body from '../../../components/Fundraising/Detail/Body';
-import { PlanResponse } from '../../../types/post';
+import { PlanResponse, HeartResponse } from '../../../types/post';
 import Plan from '../../../components/Fundraising/Detail/Plan';
 import BottomButton from '../../../components/BottomButton';
 import Heart from '../../../components/Fundraising/Detail/Heart';
@@ -66,11 +66,22 @@ export default function Detail() {
             })}
           </PlanContainer>
           <TeamContainer>
-            <Team imgUrl={data.imageUrl} fundraiserId={data?.fundraiserId} fundraiserName={data?.fundraiserName ?? ''} />
+            <Team
+              imgUrl={data.imageUrl}
+              fundraiserId={data?.fundraiserId}
+              fundraiserName={data?.fundraiserName ?? ''}
+            />
           </TeamContainer>
           <HeartContainer>
             <h3>나눔 하트</h3>
-            <Heart />
+            <HeartContent>
+              <ul>
+                {data?.heartResponses?.map((list: HeartResponse) => {
+                  console.log(list, 'gmx m');
+                  return <Heart key={list.donerId} donerProfileUrl={list.donerProfileUrl} donerName={list.donerName} />;
+                })}
+              </ul>
+            </HeartContent>
           </HeartContainer>
           <ButtonBox>
             <BottomButton title={'후원하기'} width="100%" height="68px" opacity={0.95} />
@@ -136,6 +147,25 @@ const HeartContainer = styled.div`
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 7px;
+  }
+`;
+
+const HeartContent = styled.div`
+  overflow: auto;
+  width: 100%;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  ul {
+    line-height: 2;
+    display: flex;
+    width: 100%;
+    list-style: none;
+    font-size: 18px;
+    color: ${colors.gray900};
+    gap: 7px;
   }
 `;
 
