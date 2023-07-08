@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { colors } from '../../../styles/colors';
 import useGetForumDetail from '../../../hooks/fundraising/useGetForumDetail';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import Body from '../../../components/Fundraising/Detail/Body';
 import { PlanResponse } from '../../../types/post';
 import Plan from '../../../components/Fundraising/Detail/Plan';
@@ -20,9 +20,16 @@ export default function Detail() {
     return Number(router.query.id);
   }, [router.query.id]);
 
-  const { data } = useGetForumDetail(boardId);
+  const { data, isLoading, isError } = useGetForumDetail(boardId);
 
-  if (data === undefined) {
+  useEffect(() => {
+    if (isError) {
+      window.alert('서버에 오류가 발생했습니다.');
+      router.back();
+    }
+  }, [isError, router]);
+
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -38,7 +45,7 @@ export default function Detail() {
           onClick={() => router.back()}
         />
       </TopContainer>
-      {data.id !== undefined && data.content !== undefined ? (
+      {data ? (
         <>
           <Head
             title={data?.title ?? ''}
@@ -50,6 +57,7 @@ export default function Detail() {
             percent={data?.percent ?? 0}
             targetAmount={data?.targetAmount ?? 0}
           />
+          <Line />
           <Body subTitle={data?.subTitle ?? ''} content={data?.content ?? ''} />
           <PlanContainer>
             <h3>모금 사용계획</h3>
@@ -58,7 +66,7 @@ export default function Detail() {
             })}
           </PlanContainer>
           <TeamContainer>
-            <Team imgUrl={data.imageUrl} fundraiserName={data?.fundraiserName ?? ''} />
+            <Team imgUrl={data.imageUrl} fundraiserId={data?.fundraiserId} fundraiserName={data?.fundraiserName ?? ''} />
           </TeamContainer>
           <HeartContainer>
             <h3>나눔 하트</h3>
@@ -136,4 +144,9 @@ const ButtonBox = styled.div`
   bottom: 0;
   width: 100%;
   max-width: 420px;
+`;
+
+const Line = styled.div`
+  border-top: 1px solid ${colors.gray300};
+  width: 100%;
 `;
