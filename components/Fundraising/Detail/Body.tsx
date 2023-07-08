@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { colors } from '../../../styles/colors';
 
-export default function Body({ subTitle, content }: { content: string; subTitle: string }) {
+export default function Body({ subTitle, content = '' }: { content: string; subTitle: string }) {
   return (
     <MainTextContainer>
       <MainText>
@@ -31,7 +31,6 @@ const MainTextContainer = styled.div`
   padding-top: 40px;
   position: relative;
   box-sizing: border-box;
-  border-top: 1px solid ${colors.gray300};
   border-bottom: 1px solid ${colors.gray300};
 `;
 

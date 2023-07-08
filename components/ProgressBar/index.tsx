@@ -49,7 +49,7 @@ const Progressbar = styled.progress`
   }
 
   &::-webkit-progress-value {
-    background-color: ${colors.gray900};
+    background-color: ${colors.pink500};
     border-radius: 5px;
   }
 `;

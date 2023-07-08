@@ -12,6 +12,7 @@ export interface InputProps {
   marginBottom?: string;
   defaultValue?: string;
   id?: string;
+  color?: string;
 }
 
 export default function Input({ type, placeholder, value, onChange, ...props }: InputProps) {
@@ -27,6 +28,7 @@ const StyleInput = styled.input<InputProps>`
   border-bottom: 0.1rem solid #dcdce0;
   font-size: 16px;
   background-color: transparent;
+  color: ${({ color }) => color ?? '#000000'};
 
   ::placeholder {
     color: #dcdce0;
