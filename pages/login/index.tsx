@@ -5,9 +5,8 @@ import Header from '../../components/Layout/Header';
 import Input from '../../components/Input';
 import BottomButton from '../../components/BottomButton';
 import { useState } from 'react';
-import { useMutation } from 'react-query';
-import { postLogin } from '../../api/auth/loginAPI';
 import { saveAccessTokenToLocalStorage } from '../../utils/accessTokenHandler';
+import { useLogin } from '../../orval/api/유저-기부자-모금자-공통-api/유저-기부자-모금자-공통-api';
 
 export default function Login() {
   const [userid, setUserId] = useState({ value: '', text: '', hidden: true });
@@ -33,21 +32,24 @@ export default function Login() {
   const isButtonDisabled =
     userid.value.length < 8 || !userid.value.includes('@') || !userid.value.includes('.') || !userPassword.value;
 
-  const { mutate: login } = useMutation(() => postLogin(userid.value, userPassword.value), {
-    onSuccess: res => {
-      const { token } = res.response;
-      saveAccessTokenToLocalStorage(token);
-      router.push('/');
-    },
-    onError: err => {
-      console.log(`실패 ${err}`);
-    },
-  });
+  const loginMutate = useLogin();
 
-  console.log(userid.value, userPassword.value);
-
-  const handleLogin = (): void => {
-    login();
+  const handleLogin = () => {
+    loginMutate.mutate(
+      {
+        data: {
+          email: userid.value,
+          password: userPassword.value,
+        },
+      },
+      {
+        onSuccess: ({ response }) => {
+          const accessToken = response?.token;
+          if (accessToken) saveAccessTokenToLocalStorage(accessToken);
+          router.push('/');
+        },
+      }
+    );
   };
 
   const handleSignup = () => {

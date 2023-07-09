@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    domains: ['nuabo-bucket.s3.ap-northeast-2.amazonaws.com'],
+  },
 };
-
-const withImages = require('next-images');
-module.exports = withImages();
 
 module.exports = nextConfig;

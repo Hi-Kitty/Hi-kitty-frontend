@@ -9,7 +9,7 @@ import { reset } from '../styles/style';
 import styled from '@emotion/styled';
 import '../public/static/fonts/style.css';
 
-export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+export default function MyApp({ Component, pageProps }: AppProps) {
   const STALE_TIME = 10 * 60 * 1000;
   const CACHE_TIME = 10 * 60 * 1000;
 
