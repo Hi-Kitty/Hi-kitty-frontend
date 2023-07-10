@@ -13,6 +13,8 @@ import { GetOrdersParams } from '../../../orval/model';
 import DonorList from './DonorList';
 import Footer from '../../../components/Layout/Footer';
 import DonorListNone from './DonorListNone';
+import commaNumber from '../../../utils/commaNumber';
+import { useRouter } from 'next/router';
 
 const PAGE_PARAM = {
   page: 0,
@@ -20,6 +22,7 @@ const PAGE_PARAM = {
 } as unknown as GetOrdersParams;
 
 export default function DonorMainProfile() {
+  const router = useRouter();
   const getUserInfoStatus = useGetByEmail();
   const getTotalCount = useGetTotals();
   const getOrders = useGetOrders(PAGE_PARAM);
@@ -27,6 +30,11 @@ export default function DonorMainProfile() {
   const userInfo = getUserInfoStatus.data?.response;
   const userTotalCount = getTotalCount.data?.response;
   const donorList = getOrders.data?.response?.content;
+
+  const handleLogout = (): void => {
+    localStorage.clear();
+    router.push('/login');
+  };
 
   return (
     <Container>
@@ -42,7 +50,7 @@ export default function DonorMainProfile() {
                 <EntireCount>
                   <CountBox>
                     <ValueName>총후원금</ValueName>
-                    <Value>{userTotalCount?.totalAmount}원</Value>
+                    <Value>{commaNumber(Number(userTotalCount?.totalAmount))}원</Value>
                   </CountBox>
                   <VerticalLine />
                   <CountBox>
@@ -57,7 +65,7 @@ export default function DonorMainProfile() {
               <DonorListNone />
             )}
             <Logout>
-              <a href="#">로그아웃</a>
+              <p onClick={handleLogout}>로그아웃</p>
             </Logout>
           </DonationListWrapper>
         </DonorProfile>
@@ -78,10 +86,12 @@ const DonorProfile = styled.div``;
 
 const DonationListWrapper = styled.div``;
 
-const DonationListTitle = styled.div`
+const DonationListTitle = styled.h3`
   font-size: 18px;
-  font-weight: 700;
   color: ${colors.black};
+  font-weight: 600;
+  line-height: 140%;
+  letter-spacing: -0.072px;
   padding: 21px 0 27px 17px;
 `;
 
@@ -94,15 +104,21 @@ const CountBox = styled.div`
   text-align: center;
 `;
 
-const ValueName = styled.div`
+const ValueName = styled.p`
   font-size: 13px;
   color: #29292e;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 140%;
+  letter-spacing: -0.052px;
 `;
 
-const Value = styled.div`
+const Value = styled.p`
   font-size: 18px;
-  color: #000;
-  font-weight: 700;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  letter-spacing: -0.072px;
 `;
 
 const VerticalLine = styled.div`
@@ -122,9 +138,15 @@ const Logout = styled.div`
   justify-content: flex-end;
   margin: 103px 17px 62px 0;
 
-  a {
+  p {
     font-size: 14px;
     font-weight: 500;
-    color: #000;
+    color: ${colors.gray800};
+    cursor: pointer;
+
+    &:hover {
+      color: ${colors.black};
+      transition: color 0.1s ease-in-out;
+    }
   }
 `;
