@@ -10,12 +10,6 @@ import type { OrderRequestPayType } from './orderRequestPayType';
 export interface OrderRequest {
   /** 결제 금액 */
   amount: number;
-  /** 후원명 == 주문명 */
-  orderName: string;
-  /** 주문자 이름 */
-  customerName: string;
-  /** 주문자 이메일 */
-  customerEmail?: string;
   /** 게시판 id */
   boardId: number;
   /** 결제 타입 */
