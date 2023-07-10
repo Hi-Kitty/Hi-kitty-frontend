@@ -9,13 +9,15 @@ import { GetBoardsParams } from '../../../orval/model';
 import PostCard from '../../../components/PostCard/PostCard';
 import { AllPostResponse } from '../../../types/post';
 import { useRouter } from 'next/router';
+import ProfileImg from '../../../components/ProfileImg';
+import ProfileInfo from '../../../components/ProfileInfo';
 
 const PAGE_PARAM = {
   page: 0,
   size: 100000,
 } as unknown as GetBoardsParams;
 
-export default function FundraiserListNone() {
+export default function FundraiserMainProfile() {
   const router = useRouter();
   const getUserInfoStatus = useGetByEmail();
   const userInfo = getUserInfoStatus.data?.response;
@@ -23,60 +25,17 @@ export default function FundraiserListNone() {
   const getUserBoardStatus = useGetBoards(PAGE_PARAM);
   const userBoard = getUserBoardStatus.data?.response?.content;
 
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  const handleGoSetting = () => {
-    router.push('/mypage/setting');
+  const handleLogout = (): void => {
+    localStorage.clear();
+    router.push('/login');
   };
 
   return (
     <Container>
       <Header />
-      <Thumbnail>
-        <ThumbnailList>
-          <Image src="/images/ArrowBack.svg" width={18} height={20} alt="previous" onClick={handleGoBack} />
-          <Image src="/images/settingIcon.svg" width={18} height={18} alt="settings" onClick={handleGoSetting} />
-        </ThumbnailList>
-        <Image src={String(userInfo?.url ?? '')} width={65} height={65} alt="donor_profile" />
-      </Thumbnail>
-
-      <ProfileInfo>
-        <Profile>프로필</Profile>
-        <InformationBoxWrapper>
-          <InfoBox>
-            <InfoName>로그인</InfoName>
-            <InfoValue>{userInfo?.email}</InfoValue>
-            <Line />
-          </InfoBox>
-          <InfoBox>
-            <InfoName>프로젝트팀</InfoName>
-            <InfoValue>{userInfo?.name}</InfoValue>
-            <Line />
-          </InfoBox>
-        </InformationBoxWrapper>
-
-        {/* <Profile>연동계좌</Profile>
-        <InformationBoxWrapper>
-          <InfoBox>
-            <InfoName>계좌</InfoName>
-            <InfoValue>{userInfo.}</InfoValue>
-            <Line />
-          </InfoBox>
-        </InformationBoxWrapper> */}
-      </ProfileInfo>
-
+      <ProfileImg profileImgSrc={userInfo?.url} />
+      <ProfileInfo email={userInfo?.email ?? ''} name={userInfo?.name ?? ''} />
       <DonationListTitle>모금함</DonationListTitle>
-      {/* {userInfo?.?.length === 0 ? (
-       <CatFeed>
-       <Image src="../images/CatFeed.svg" width={218} height={142} alt="후원내역이 없어요" />
-     </CatFeed>
-     <DonationMsg>키치한 프로젝트를{'\n'}시작해 보세요</DonationMsg>
-        }) : (
-            <DonorList donorlist={donorList} />
-            )}
-        {/* <DonorListNone /> */}
       {userBoard?.length === 0 ? (
         <>
           <CatFeed>
@@ -90,9 +49,10 @@ export default function FundraiserListNone() {
             <PostCard list={board as unknown as AllPostResponse} key={board.id} />
           ))}
         </>
-        // <PostCard post={userBoard} />
       )}
-
+      <Logout>
+        <p onClick={handleLogout}>로그아웃</p>
+      </Logout>
       <Footer />
     </Container>
   );
@@ -116,7 +76,7 @@ const ThumbnailList = styled.div`
   padding-top: 14px;
 `;
 
-const ProfileInfo = styled.div`
+const ProfileInfoComp = styled.div`
   padding-left: 17px;
 `;
 const Profile = styled.div`
@@ -178,4 +138,22 @@ const DonationMsg = styled.div`
   color: #29292e;
   white-space: pre-wrap;
   letter-spacing: -0.072px;
+`;
+
+const Logout = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 103px 17px 62px 0;
+
+  p {
+    font-size: 14px;
+    font-weight: 500;
+    color: ${colors.gray800};
+    cursor: pointer;
+
+    &:hover {
+      color: ${colors.black};
+      transition: color 0.1s ease-in-out;
+    }
+  }
 `;

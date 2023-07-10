@@ -17,7 +17,7 @@ export default function ProfileImg({ profileImgSrc }: ProfileImgProps) {
   };
 
   const handleGoSetting = () => {
-    router.push('/donor-setting');
+    router.push('/mypage/setting');
   };
 
   return (
