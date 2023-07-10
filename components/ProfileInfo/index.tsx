@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 import { colors } from '../../styles/colors';
 import Input from '../Input';
+import { useGetByEmail } from '../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
 
 interface UserProfileInfoProps {
   email: string;
@@ -9,7 +9,8 @@ interface UserProfileInfoProps {
 }
 
 export default function UserProfileInfo({ email, name }: UserProfileInfoProps) {
-  const router = useRouter();
+  const getUserInfoStatus = useGetByEmail();
+  const userInfo = getUserInfoStatus.data?.response;
 
   return (
     <ProfileInfo>
@@ -17,11 +18,11 @@ export default function UserProfileInfo({ email, name }: UserProfileInfoProps) {
       <InformationBoxWrapper>
         <InfoBox>
           <InfoName>로그인</InfoName>
-          <Input type={'email'} width="300px" value={email} />
+          <Input type={'email'} width="280px" value={email} readOnly />
         </InfoBox>
         <InfoBox>
-          <InfoName>닉네임</InfoName>
-          <Input type={'email'} width="300px" value={name} />
+          {userInfo?.role === 'ROLE_FUNDRAISER' ? <InfoName>닉네임</InfoName> : <InfoName>단체명</InfoName>}
+          <Input type={'name'} width="280px" value={name} readOnly />
         </InfoBox>
       </InformationBoxWrapper>
     </ProfileInfo>

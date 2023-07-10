@@ -13,6 +13,7 @@ export interface InputProps {
   defaultValue?: string;
   id?: string;
   color?: string;
+  readOnly?: boolean;
 }
 
 export default function Input({ type, placeholder, value, onChange, ...props }: InputProps) {
@@ -29,6 +30,10 @@ const StyleInput = styled.input<InputProps>`
   font-size: 16px;
   background-color: transparent;
   color: ${({ color }) => color ?? '#000000'};
+
+  :read-only {
+    border-bottom: 0.1rem solid #000000;
+  }
 
   ::placeholder {
     color: #dcdce0;
