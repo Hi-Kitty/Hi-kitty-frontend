@@ -1,16 +1,9 @@
 import { useRouter } from 'next/router';
-
-import useGetGroupInfo from '../../../../hooks/fundraising/useGetGroupInfo';
-import Loading from '../../../../components/Loading';
-import { useMemo } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { colors } from '../../../../styles/colors';
 import PostCard from '../../../../components/PostCard/PostCard';
 import { Content } from '../../../../types/info';
-import Team from '../../../../components/Fundraising/Detail/Team';
-import { DetailPostResponse } from '../../../../types/post';
-import useGetForumDetail from '../../../../hooks/fundraising/useGetForumDetail';
 import { useGetBoards2 } from '../../../../orval/api/게시판-조회-api/게시판-조회-api';
 import { GetBoards2Params } from '../../../../orval/model';
 
@@ -47,7 +40,10 @@ export default function GroupPage() {
       </TopContainer>
       <TeamContainer>
         <TeamContent>
-          <img src={firstData?.imageUrl} />
+          <img
+            src={firstData && (firstData?.fundraiserProfileUrl ? firstData?.fundraiserProfileUrl : '/images/Cat.svg')}
+          />
+
           <p>{firstData?.fundraiserName}</p>
         </TeamContent>
       </TeamContainer>
@@ -111,6 +107,7 @@ const TeamContent = styled.div`
     height: 55px;
     border-radius: 50%;
     object-fit: cover;
+    background-color: ${colors.white};
   }
 
   p {

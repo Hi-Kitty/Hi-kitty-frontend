@@ -17,5 +17,7 @@ export interface PageImageGet {
   imageName?: string;
   createdAt?: string;
   endAt?: string;
+  fundraiserProfileUrl?: string;
+  fundraiserProfileName?: string;
   dday?: number;
 }
