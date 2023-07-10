@@ -11,35 +11,27 @@ import { Content } from '../../../../types/info';
 import Team from '../../../../components/Fundraising/Detail/Team';
 import { DetailPostResponse } from '../../../../types/post';
 import useGetForumDetail from '../../../../hooks/fundraising/useGetForumDetail';
+import { useGetBoards2 } from '../../../../orval/api/게시판-조회-api/게시판-조회-api';
+import { GetBoards2Params } from '../../../../orval/model';
+
+const PAGE_PARAM = {
+  page: 0,
+  size: 100000,
+} as unknown as GetBoards2Params;
 
 export default function GroupPage() {
   const router = useRouter();
-  const fundraiserId = useMemo(() => {
-    if (!router.query.id) return 0;
-    return Number(router.query.id);
-  }, [router.query.id]);
+  const fundraiserId = router.query.id ? Number(router.query.id) : 0;
 
-  const { data, isLoading, isError } = useGetGroupInfo(fundraiserId);
-  console.log('data', { data, isLoading, isError, fundraiserId });
+  const boardStatus = useGetBoards2(fundraiserId, PAGE_PARAM, {
+    query: {
+      enabled: !!Number(fundraiserId),
+    },
+  });
 
-  const InfoData = useMemo(() => {
-    return data?.response?.content ?? [];
-  }, [data]);
+  const InfoData = boardStatus.data?.response?.content;
 
-  const firstData = useMemo(() => {
-    return InfoData?.[0] ?? {};
-  }, [InfoData]);
-
-  console.log(InfoData, 'InfoData');
-
-  const { data: detailData } = useGetForumDetail(fundraiserId);
-  const DetailData = useMemo(() => {
-    return detailData?.content ?? [];
-  }, [detailData]);
-
-  // if (InfoData === undefined) {
-  //   return <Loading />;
-  // }
+  const firstData = (InfoData && InfoData[0]) ?? {};
 
   return (
     <Container>
@@ -64,9 +56,10 @@ export default function GroupPage() {
           <FundingMain>
             <h3>모금함 내역</h3>
             {(InfoData ?? []).length > 0 ? (
-              InfoData.map((list: Content) => {
+              InfoData &&
+              InfoData.map(list => {
                 if (list.fundraiserName !== null) {
-                  return <PostCard list={list} key={list.id} />;
+                  return <PostCard list={list as unknown as Content} key={list.id} />;
                 }
               })
             ) : (
