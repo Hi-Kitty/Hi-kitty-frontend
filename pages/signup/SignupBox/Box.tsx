@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { colors } from '../../styles/colors';
+import { colors } from '../../../styles/colors';
 
 interface Props {
   mode: string;

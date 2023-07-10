@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { colors } from '../../../styles/colors';
-import { CompleteResponse } from '../../../orval/model';
+import { colors } from '../../../../styles/colors';
+import { CompleteResponse } from '../../../../orval/model';
 
 interface DonorListProps {
   donorlist: CompleteResponse[];
@@ -9,23 +9,23 @@ interface DonorListProps {
 export default function DonorList({ donorlist }: DonorListProps) {
   return (
     <>
-      {donorlist.map(dornor => (
-        <DonationList key={dornor.orderId}>
+      {donorlist.map(donor => (
+        <DonationList key={donor.orderId}>
           <DonationWrapper>
             <DonationListSet>
-              <DonationDate>{dornor.createdAt}</DonationDate>
+              <DonationDate>{donor.createdAt}</DonationDate>
               <ListRow>
                 <ListName>후원명</ListName>
-                <ListValue>{dornor.orderName}</ListValue>
+                <ListValue>{donor.orderName}</ListValue>
               </ListRow>
               <ListRow>
                 <ListName>후원단체</ListName>
-                <ListValue>{dornor.fundraiserName}</ListValue>
+                <ListValue>{donor.fundraiserName}</ListValue>
               </ListRow>
               <ListRow>
                 <ListName>후원금액</ListName>
                 <ListValue>
-                  <span>{dornor.amount}원</span>
+                  <span>{donor.amount}원</span>
                 </ListValue>
               </ListRow>
             </DonationListSet>

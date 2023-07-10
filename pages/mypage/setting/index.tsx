@@ -1,17 +1,17 @@
 import styled from '@emotion/styled';
-import { colors } from '../../styles/colors';
-import Header from '../../components/Layout/Header';
-import Footer from '../../components/Layout/Footer';
-import ProfileInput from '../../components/ProfileInput';
-import BottomButton from '../../components/BottomButton';
+import { colors } from '../../../styles/colors';
+import Header from '../../../components/Layout/Header';
+import ProfileInput from '../../../components/ProfileInput';
+import BottomButton from '../../../components/BottomButton';
 import Image from 'next/image';
 import {
   useGetByEmail,
   useUpdatePassword,
-} from '../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
+} from '../../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { UserUpdateRequest } from '../../orval/model';
+import { UserUpdateRequest } from '../../../orval/model';
 import { useRouter } from 'next/router';
+import 'react-pure-modal/dist/react-pure-modal.min.css';
 
 const initialForm = {
   name: '',
@@ -38,7 +38,7 @@ export default function DonorProfileSetting() {
       }));
       setImgSrc(String(userInfo?.url));
     }
-  }, [getUserInfoStatus.status]);
+  }, [getUserInfoStatus.status, userInfo?.name, userInfo?.url]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -86,16 +86,18 @@ export default function DonorProfileSetting() {
         <ProfileModifyName>프로필 수정</ProfileModifyName>
         <input type="file" onChange={handleChangeFile} />
         <ProfileModifyInfo>
-          <ProfileInputList>
-            <ModifyInfo>닉네임</ModifyInfo>
-            <ProfileInput
-              type={'text'}
-              placeholder={'닉네임'}
-              name={'name'}
-              value={form.name}
-              onChange={handleChange}
-            />
-          </ProfileInputList>
+          {userInfo?.role === 'ROLE_DONER' && (
+            <ProfileInputList>
+              <ModifyInfo>닉네임</ModifyInfo>
+              <ProfileInput
+                type={'text'}
+                placeholder={'닉네임'}
+                name={'name'}
+                value={form.name}
+                onChange={handleChange}
+              />
+            </ProfileInputList>
+          )}
           <ProfileInputList>
             <ModifyInfo>비밀번호</ModifyInfo>
             <ProfileInput

@@ -1,18 +1,18 @@
 import styled from '@emotion/styled';
-import { colors } from '../../styles/colors';
-import Header from '../../components/Layout/Header';
-import ProfileImg from '../../components/ProfileImg';
-import ProfileInfo from '../../components/ProfileInfo';
-import { useGetByEmail } from '../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
+import { colors } from '../../../styles/colors';
+import Header from '../../../components/Layout/Header';
+import ProfileImg from '../../../components/ProfileImg';
+import ProfileInfo from '../../../components/ProfileInfo';
+import { useGetByEmail } from '../../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
 import {
   useGetOrders,
   useGetTotals,
-} from '../../orval/api/기부자용-하트-생성-및-프로필-관련-api/기부자용-하트-생성-및-프로필-관련-api';
-import { GetOrdersParams } from '../../orval/model';
+} from '../../../orval/api/기부자용-하트-생성-및-프로필-관련-api/기부자용-하트-생성-및-프로필-관련-api';
+import { GetOrdersParams } from '../../../orval/model';
 
-import DonorList from './donorList';
-import Footer from '../../components/Layout/Footer';
-import DonorListNone from './donorListNone';
+import DonorList from './DonorList';
+import Footer from '../../../components/Layout/Footer';
+import DonorListNone from './DonorListNone';
 
 const PAGE_PARAM = {
   page: 0,

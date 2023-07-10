@@ -5,7 +5,7 @@ import Input from '../../components/Input';
 import BottomButton from '../../components/BottomButton';
 import Header from '../../components/Layout/Header';
 import { colors } from '../../styles/colors';
-import SignUpBox from '../../components/Signup/Box';
+import SignUpBox from './SignupBox/Box';
 import instance from '../../api/axios';
 
 export default function Signup() {
