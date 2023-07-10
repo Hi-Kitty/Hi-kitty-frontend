@@ -3,24 +3,29 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { colors } from '../../styles/colors';
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, FormEvent, useMemo, useRef, useState } from 'react';
 import BottomButton from '../../components/BottomButton';
 import Input from '../../components/Input';
 import { onlyNumber } from '../../utils/onlyNumber';
 import commaNumber from '../../utils/commaNumber';
+import { useCreate1 } from '../../api/모금자용-권한용-api/모금자용-권한용-api';
+
+const initialForm = {
+  title: '',
+  subTitle: '',
+  contents: '',
+  date: '',
+  num: '0',
+  amountNum: '0',
+  plan: '',
+};
 
 export default function Write() {
   const router = useRouter();
-
-  const [form, setForm] = useState({
-    title: '',
-    subTitle: '',
-    contents: '',
-    date: '',
-    num: '0',
-    amountNum: '0',
-    plan: '',
-  });
+  const [form, setForm] = useState(initialForm);
+  const [showImages, setShowImages] = useState<string[]>([]);
+  const [imageFile, setImageFile] = useState<File>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -29,7 +34,6 @@ export default function Write() {
       const processedValue = onlyNumber(value); // 숫자와 콤마만 남기는 처리
       const numericValue = Number(processedValue.replace(/,/g, '')); // 콤마 제거 후 숫자로 변환
       if (!isNaN(numericValue)) {
-        // NaN 체크
         setForm({
           ...form,
           [name]: numericValue,
@@ -67,12 +71,17 @@ export default function Write() {
     return true;
   }, [form]);
 
-  const [showImages, setShowImages] = useState<string[]>([]);
   let imageUrlLists: string[] = [...showImages];
+
   const handleAddImages = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     const imageLists = event.target.files;
+
+    if (!imageLists) return;
     imageUrlLists.push(URL.createObjectURL(imageLists[0]));
     setShowImages(imageUrlLists);
+
+    if (file) setImageFile(file);
   };
 
   const handleDeleteImage = (index: number) => {
@@ -83,8 +92,39 @@ export default function Write() {
     file.value = '';
   };
 
+  const boardCreateMutate = useCreate1();
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    boardCreateMutate.mutate({
+      data: {
+        boardCreateRequest: {
+          content: form.contents,
+          endAt: form.date,
+          targetAmount: Number(form.num),
+          title: form.title,
+          subTitle: form.subTitle,
+        },
+        img: imageFile as File,
+        planCreatesRequest: [
+          {
+            reason: form.plan,
+            amount: Number(form.amountNum),
+          },
+        ],
+      },
+    });
+  };
+
+  const handleDefaultImage = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+
   return (
-    <Container>
+    <Container onSubmit={handleSubmit}>
       <TopContainer>
         <Image
           src="/images/ArrowBack.svg"
@@ -97,6 +137,7 @@ export default function Write() {
       </TopContainer>
       <Article>
         <BackgroundImg
+          ref={inputRef}
           type="file"
           id="file"
           accept="image/jpg, image/jpeg, image/png"
@@ -108,7 +149,7 @@ export default function Write() {
           width={420}
           height={300}
           alt="cat-hungry"
-          onClick={() => document.getElementById('file').click()}
+          onClick={handleDefaultImage}
         />
         {/* <BackgroundImg style={{ backgroundImage: `url('images/Cat-hungry.svg')` }}> */}
         {showImages.map((image, id) => (
@@ -199,7 +240,7 @@ export default function Write() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.form`
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -274,9 +315,9 @@ const UpImg = styled.div`
   }
 
   span {
-    width: 1.8rem;
-    height: 1.8rem;
-    font-size: 1.2rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1rem;
     font-weight: 500;
     line-height: 140%;
     padding-left: 4.5px;
