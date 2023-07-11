@@ -8,10 +8,9 @@ import {
   useGetByEmail,
   useUpdatePassword,
 } from '../../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { UserUpdateRequest } from '../../../orval/model';
 import { useRouter } from 'next/router';
-import 'react-pure-modal/dist/react-pure-modal.min.css';
 
 const initialForm = {
   name: '',
@@ -19,11 +18,13 @@ const initialForm = {
   passwordCheck: '',
 };
 
-export default function DonorProfileSetting() {
+export default function Setting() {
   const router = useRouter();
   const [form, setForm] = useState(initialForm);
   const [imgSrc, setImgSrc] = useState('');
   const [file, setFile] = useState<File>();
+  const [image, setImage] = useState<any>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const getUserInfoStatus = useGetByEmail();
   const updatePasswordMutate = useUpdatePassword();
@@ -49,10 +50,26 @@ export default function DonorProfileSetting() {
     }));
   };
 
+  const onLoadFile = (e: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(e);
+    return new Promise<void>(resolve => {
+      reader.onload = (): void => {
+        setImage(reader.result);
+        resolve();
+      };
+    });
+  };
+
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
-    setFile(file);
+    const formData = new FormData();
+    formData.append('image', file);
+    setImage(formData);
+    if (file) {
+      setFile(file);
+      onLoadFile(file);
+    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -71,6 +88,10 @@ export default function DonorProfileSetting() {
     });
   };
 
+  const handleUploadButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <Container>
       <Header />
@@ -80,11 +101,14 @@ export default function DonorProfileSetting() {
             <Image src="/images/ArrowBack.svg" width={18} height={20} alt="previous" />
           </BackButton>
         </ThumbnailList>
-        <Image src={String(userInfo?.url ?? '')} width={65} height={65} alt="donor_profile" />
+        <ImageChangeBox onClick={handleUploadButtonClick}>
+          <InputImage ref={fileInputRef} type="file" accept=".jpeg, .jpg, .png" onChange={handleChangeFile} />
+          <ProfileImage src={image ? image : String(userInfo?.url ?? '')} width={65} height={65} alt="donor_profile" />
+          <CameraIcon src="/images/Camera.svg" alt="변경 아이콘" />
+        </ImageChangeBox>
       </Thumbnail>
       <ProfileModifyWrapper onSubmit={handleSubmit}>
         <ProfileModifyName>프로필 수정</ProfileModifyName>
-        <input type="file" onChange={handleChangeFile} />
         <ProfileModifyInfo>
           {userInfo?.role === 'ROLE_DONER' && (
             <ProfileInputList>
@@ -174,4 +198,30 @@ const ModifyInfo = styled.div`
 
 const BackButton = styled.div`
   cursor: pointer;
+`;
+
+const CameraIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  position: absolute;
+  transform: translate(-90%, 220%);
+  background-color: ${colors.gray400};
+  z-index: 30;
+  cursor: pointer;
+`;
+
+const ImageChangeBox = styled.div`
+  width: 66px;
+  height: 65px;
+`;
+
+const ProfileImage = styled.img`
+  border-radius: 100px;
+  border: 1px solid #eeeef2;
+  cursor: pointer;
+`;
+
+const InputImage = styled.input`
+  display: none;
 `;

@@ -30,7 +30,9 @@ export default function ProfileImg({ profileImgSrc }: ProfileImgProps) {
           <Image src={settingIcon} width={18} height={18} alt="settings" />
         </ImageWrapper>
       </ThumbnailList>
-      {profileImgSrc && <Image src={profileImgSrc} width={65} height={65} alt="donor_profile" />}
+      {profileImgSrc && (
+        <Image src={profileImgSrc} width={65} height={65} style={{ borderRadius: '100px' }} alt="donor_profile" />
+      )}
     </Thumbnail>
   );
 }
