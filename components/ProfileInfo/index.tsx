@@ -21,7 +21,7 @@ export default function UserProfileInfo({ email, name }: UserProfileInfoProps) {
           <Input type={'email'} width="280px" value={email} readOnly />
         </InfoBox>
         <InfoBox>
-          {userInfo?.role === 'ROLE_FUNDRAISER' ? <InfoName>닉네임</InfoName> : <InfoName>단체명</InfoName>}
+          {userInfo?.role === 'ROLE_FUNDRAISER' ? <InfoName>단체명</InfoName> : <InfoName>닉네임</InfoName>}
           <Input type={'name'} width="280px" value={name} readOnly />
         </InfoBox>
       </InformationBoxWrapper>

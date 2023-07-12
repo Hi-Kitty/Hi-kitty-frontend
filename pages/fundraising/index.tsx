@@ -6,10 +6,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { AllPostResponse } from '../../types/post';
 import { useMemo } from 'react';
+import { useGetByEmail } from '../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
 
 export default function Fundraising() {
   const router = useRouter();
   const { data } = useGetForumAll();
+  const getUserInfoStatus = useGetByEmail();
+  const userInfo = getUserInfoStatus.data?.response;
 
   const ForumData = useMemo(() => {
     return data?.response?.content ?? [];
@@ -18,6 +21,10 @@ export default function Fundraising() {
   if (ForumData === undefined) {
     return <Loading />;
   }
+
+  const handleMoveWrite = () => {
+    router.push('/write');
+  };
 
   return (
     <Container>
@@ -45,6 +52,7 @@ export default function Fundraising() {
           )}
         </ContentBox>
       </ContentWrapper>
+      {userInfo?.role === 'ROLE_FUNDRAISER' && <Pencil src="/images/Pencil.png" onClick={handleMoveWrite} />}
     </Container>
   );
 }
@@ -82,4 +90,13 @@ const ContentBox = styled.div`
   max-width: 420px;
   width: 100%;
   background-color: #fff;
+`;
+
+const Pencil = styled.img`
+  width: 40px;
+  height: 50px;
+  position: fixed;
+  bottom: 94px;
+  transform: translate(900%, 130%);
+  cursor: pointer;
 `;
