@@ -8,6 +8,7 @@ import { Global } from '@emotion/react';
 import { reset } from '../styles/style';
 import styled from '@emotion/styled';
 import '../public/static/fonts/style.css';
+import { motion } from 'framer-motion';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const STALE_TIME = 10 * 60 * 1000;
@@ -38,7 +39,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <Global styles={reset} />
           <Wrapper>
-            <Component {...pageProps} />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <Component {...pageProps} />
+            </motion.div>
           </Wrapper>
         </QueryClientProvider>
       </RecoilRoot>
