@@ -11,7 +11,7 @@ interface DonorListProps {
 export default function DonorList({ donorlist }: DonorListProps) {
   return (
     <>
-      {donorlist.map(donor => (
+      {donorlist?.map(donor => (
         <DonationList key={donor.orderId}>
           <DonationWrapper>
             <DonationListSet>
@@ -53,7 +53,7 @@ const DonationListSet = styled.div`
 const DonationDate = styled.h3`
   margin-bottom: 22px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 50;
   color: #000;
   letter-spacing: -0.07px;
 `;
