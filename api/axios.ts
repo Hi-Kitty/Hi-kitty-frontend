@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
 import { getAccessTokenFromLocalStorage } from '../utils/accessTokenHandler';
+import { getRefreshTokenFromLocalStorage } from '../utils/refreshTokenHandler';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 const SERVER_URL_ROOT = process.env.NEXT_PUBLIC_SERVER_URL_ROOT;
@@ -51,7 +51,7 @@ custom_instance.interceptors.request.use(
     }
 
     if (config.url?.includes('renew')) {
-      const refreshToken = await localStorage.getData('refreshToken');
+      const refreshToken = getRefreshTokenFromLocalStorage();
 
       if (refreshToken) {
         copyConfig.headers = {
