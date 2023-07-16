@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { colors } from '../../../styles/colors';
 import Header from '../../../components/Layout/Header';
-import ProfileInput from '../../../components/ProfileInput';
 import BottomButton from '../../../components/BottomButton';
 import Image from 'next/image';
 import {
@@ -11,6 +10,7 @@ import {
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { UserUpdateRequest } from '../../../orval/model';
 import { useRouter } from 'next/router';
+import Input from '../../../components/Input';
 
 const initialForm = {
   name: '',
@@ -64,6 +64,7 @@ export default function Setting() {
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     const formData = new FormData();
+    // @ts-ignore
     formData.append('image', file);
     setImage(formData);
     if (file) {
@@ -112,32 +113,35 @@ export default function Setting() {
         <ProfileModifyInfo>
           {userInfo?.role === 'ROLE_DONER' && (
             <ProfileInputList>
-              <ModifyInfo>닉네임</ModifyInfo>
-              <ProfileInput
+              <h4>닉네임</h4>
+              <Input
                 type={'text'}
                 placeholder={'닉네임'}
                 name={'name'}
+                width="70%"
                 value={form.name}
                 onChange={handleChange}
               />
             </ProfileInputList>
           )}
           <ProfileInputList>
-            <ModifyInfo>비밀번호</ModifyInfo>
-            <ProfileInput
+            <h4>비밀번호</h4>
+            <Input
               type={'password'}
               placeholder={'8자 이상'}
               name={'password'}
               value={form.password}
               onChange={handleChange}
+              width="70%"
             />
           </ProfileInputList>
           <ProfileInputList>
-            <ModifyInfo>비밀번호 확인</ModifyInfo>
-            <ProfileInput
+            <h4>비밀번호 확인</h4>
+            <Input
               type={'password'}
               placeholder={'8자 이상'}
               name={'passwordCheck'}
+              width="70%"
               value={form.passwordCheck}
               onChange={handleChange}
             />
@@ -191,9 +195,13 @@ const ProfileInputList = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 34px;
-`;
-const ModifyInfo = styled.div`
-  display: inline;
+
+  h4 {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.056px;
+    margin-top: 10px;
+  }
 `;
 
 const BackButton = styled.div`

@@ -24,6 +24,6 @@ export interface ImagePlanHeartGet {
   profileUrl?: string;
   planResponse?: PlanResponse[];
   heartResponses?: HeartResponse[];
-  imageOriginalName?: string;
   imageUrl?: string;
+  imageOriginalName?: string;
 }

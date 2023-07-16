@@ -21,6 +21,6 @@ export interface BoardFundraiserImagePlanResponse {
   profileName?: string;
   profileUrl?: string;
   planResponse?: PlanResponse[];
-  imageOriginalName?: string;
   imageUrl?: string;
+  imageOriginalName?: string;
 }
