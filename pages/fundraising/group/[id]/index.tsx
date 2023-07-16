@@ -3,9 +3,8 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { colors } from '../../../../styles/colors';
 import PostCard from '../../../../components/PostCard/PostCard';
-import { Content } from '../../../../types/info';
 import { useGetBoards2 } from '../../../../orval/api/게시판-조회-api/게시판-조회-api';
-import { GetBoards2Params } from '../../../../orval/model';
+import { GetBoards2Params, PageImageGet } from '../../../../orval/model';
 
 const PAGE_PARAM = {
   page: 0,
@@ -15,15 +14,12 @@ const PAGE_PARAM = {
 export default function GroupPage() {
   const router = useRouter();
   const fundraiserId = router.query.id ? Number(router.query.id) : 0;
-
   const boardStatus = useGetBoards2(fundraiserId, PAGE_PARAM, {
     query: {
       enabled: !!Number(fundraiserId),
     },
   });
-
   const InfoData = boardStatus.data?.response?.content;
-
   const firstData = (InfoData && InfoData[0]) ?? {};
 
   return (
@@ -55,7 +51,7 @@ export default function GroupPage() {
               InfoData &&
               InfoData.map(list => {
                 if (list.fundraiserName !== null) {
-                  return <PostCard list={list as unknown as Content} key={list.id} />;
+                  return <PostCard list={list as unknown as PageImageGet} key={list.id} />;
                 }
               })
             ) : (

@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { colors } from '../../styles/colors';
 import CardImg from './CardImg';
-import { AllPostResponse } from '../../types/post';
 import ProgressBar from '../ProgressBar';
 import Modal from 'react-modal';
 import { useState } from 'react';
@@ -10,14 +9,15 @@ import { useGetBoard } from '../../api/모금자용-권한용-api/모금자용-�
 import { useGetByEmail } from '../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
 import commaNumber from '../../utils/commaNumber';
 import convertDateYear from '../../utils/convertDateYear';
+import { PageImageGet } from '../../orval/model';
 
-export default function PostCard({ list }: { list: AllPostResponse }) {
+export default function PostCard({ list }: { list: PageImageGet }) {
   const { id, imageUrl, dday, title, fundraiserName, percent, fundraiserId } = list;
   const router = useRouter();
   const getUserInfoStatus = useGetByEmail();
   const userInfo = getUserInfoStatus.data?.response;
 
-  const { data: getUserMonthlyAmounts } = useGetBoard(id, { query: { enabled: !!Number(id) } });
+  const { data: getUserMonthlyAmounts } = useGetBoard(id ?? 0, { query: { enabled: !!Number(id) } });
   const montlyAmount = getUserMonthlyAmounts?.response;
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -32,7 +32,7 @@ export default function PostCard({ list }: { list: AllPostResponse }) {
           <ContentWrapper>
             <RealContent>
               <ImgBox>
-                <CardImg imgUrl={imageUrl} />
+                <CardImg imgUrl={imageUrl ?? ''} />
               </ImgBox>
               <Content>
                 <DdayBox>
@@ -48,9 +48,9 @@ export default function PostCard({ list }: { list: AllPostResponse }) {
                     </p>
                   )}
                 </DdayBox>
-                <Title>{title.length < 34 ? title : title.slice(0, 35) + '...'}</Title>
+                <Title>{title ?? ''.length < 34 ? title : title ?? ''.slice(0, 35) + '...'}</Title>
                 <Organization>{fundraiserName}</Organization>
-                <ProgressBar percent={percent} />
+                <ProgressBar percent={percent ?? 0} />
               </Content>
             </RealContent>
           </ContentWrapper>

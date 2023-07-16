@@ -8,10 +8,10 @@ interface HeadProps {
   imageUrl: string;
   title: string;
   fundraiserName: string;
-  createAt: Date;
+  createAt: string;
   currentAmount: number;
-  endAt: Date;
-  percent: string;
+  endAt: string;
+  percent: number;
   targetAmount: number;
 }
 
