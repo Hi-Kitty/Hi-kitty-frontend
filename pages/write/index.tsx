@@ -115,6 +115,8 @@ export default function Write() {
         ],
       },
     });
+    window.alert('글이 작성되었습니다.');
+    router.push('/fundraising');
   };
 
   const handleDefaultImage = () => {
