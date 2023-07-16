@@ -13,24 +13,15 @@ export default function Login() {
   const [userPassword, setUserPassword] = useState({ value: '', text: '', hidden: true });
   const router = useRouter();
 
-  const checkUserId = (value: string) => {
+  const checkInput = (value: string, field: any) => {
     if (value.length === 0 || value === '') {
-      setUserId({ value: value, text: '이메일을 입력해주세요.', hidden: false });
-      return;
+      field({ value, text: `${field === setUserId ? '이메일을' : '비밀번호를'} 입력해주세요.`, hidden: false });
+    } else {
+      field({ value, text: '', hidden: true });
     }
-    setUserId({ value: value, text: '', hidden: true });
   };
 
-  const checkUserPassword = (value: string) => {
-    if (value.length === 0 || value === '') {
-      setUserPassword({ value: value, text: '비밀번호를 입력해주세요.', hidden: false });
-      return;
-    }
-    setUserPassword({ value: value, text: '', hidden: true });
-  };
-
-  const isButtonDisabled =
-    userid.value.length < 8 || !userid.value.includes('@') || !userid.value.includes('.') || !userPassword.value;
+  const isButtonDisabled = !(userid.value && userPassword.value);
 
   const loginMutate = useLogin();
 
@@ -46,7 +37,7 @@ export default function Login() {
         onSuccess: ({ response }) => {
           const accessToken = response?.token;
           if (accessToken) saveAccessTokenToLocalStorage(accessToken);
-          router.push('/');
+          router.push('/fundraising');
         },
       }
     );
@@ -71,7 +62,7 @@ export default function Login() {
                   type={'text'}
                   placeholder={'예) kitty@kitty.co.kr'}
                   name="email"
-                  onChange={e => checkUserId(e.target.value)}
+                  onChange={e => checkInput(e.target.value, setUserId)}
                 />
               </InputItem>
               <ErrorMsg>
@@ -85,7 +76,7 @@ export default function Login() {
                   id="password"
                   type={'password'}
                   name="password"
-                  onChange={e => checkUserPassword(e.target.value)}
+                  onChange={e => checkInput(e.target.value, setUserPassword)}
                 />
               </InputItem>
               <ErrorMsg>
