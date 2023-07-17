@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useRef } from 'react';
 import styled from '@emotion/styled';
+import Image from 'next/image';
 
 interface ImageUploadProps {
   onChange: (file: File) => void;
@@ -43,7 +44,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, images, onDelete })
       />
       {images.map((image, id) => (
         <UpImg key={id}>
-          <img src={image} alt={`${image}-${id}`} />
+          <Image src={image} alt={`${image}-${id}`} width={100} height={100} />
           <span onClick={() => onDelete(id)}>X</span>
         </UpImg>
       ))}

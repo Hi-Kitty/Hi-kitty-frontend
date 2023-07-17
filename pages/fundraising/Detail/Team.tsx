@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { colors } from '../../../styles/colors';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 export default function Team({
   imgUrl,
@@ -20,7 +21,7 @@ export default function Team({
   return (
     <TeamBox onClick={handleMoveTeam}>
       <TeamImg>
-        <img src={imgUrl} />
+        <Image src={imgUrl} alt="teamImg" width={100} height={100} />
         <span>{fundraiserName}</span>
       </TeamImg>
     </TeamBox>

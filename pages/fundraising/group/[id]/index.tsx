@@ -36,10 +36,12 @@ export default function GroupPage() {
       </TopContainer>
       <TeamContainer>
         <TeamContent>
-          <img
+          <Image
             src={firstData && (firstData?.fundraiserProfileUrl ? firstData?.fundraiserProfileUrl : '/images/Cat.svg')}
+            alt="teamImg"
+            width={100}
+            height={100}
           />
-
           <p>{firstData?.fundraiserName}</p>
         </TeamContent>
       </TeamContainer>
@@ -57,7 +59,7 @@ export default function GroupPage() {
             ) : (
               <>
                 <EmptyBox>
-                  <img src="/images/Cat-hungry.svg" width={250} height={300} alt="ktty" style={{ paddingTop: 5 }} />
+                  <Image src="/images/Cat-hungry.svg" width={250} height={300} alt="ktty" style={{ paddingTop: 5 }} />
                   <span>모금내역이 없어요!</span>
                 </EmptyBox>
               </>

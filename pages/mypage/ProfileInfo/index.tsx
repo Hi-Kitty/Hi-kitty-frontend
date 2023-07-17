@@ -54,16 +54,3 @@ const InfoName = styled.div`
   font-weight: 600;
   margin-right: 52px;
 `;
-
-const InfoValue = styled.div`
-  display: inline;
-  font-size: 14px;
-  font-weight: 600;
-`;
-
-const Line = styled.div`
-  width: 25rem;
-  margin-left: 89px;
-  padding-top: 5px;
-  border-bottom: 1px solid #000;
-`;

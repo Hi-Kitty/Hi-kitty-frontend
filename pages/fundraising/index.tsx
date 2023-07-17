@@ -54,8 +54,9 @@ export default function Fundraising() {
         />
         <h1>모금중</h1>
         {userInfo?.id ? (
-          <img
-            src={userInfo?.url}
+          <Image
+            src={userInfo?.url ?? '/images/People.svg'}
+            alt="profileImg"
             width={34}
             height={26}
             style={{ borderRadius: '100px', cursor: 'pointer' }}

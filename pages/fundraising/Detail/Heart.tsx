@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import { colors } from '../../../styles/colors';
+import Image from 'next/image';
 
 export default function Heart({ donerName, donerProfileUrl }: { donerName: string; donerProfileUrl: string }) {
   return (
     <HeartContent>
       <li>
         <span>
-          <img src={donerProfileUrl} />
+          <Image src={donerProfileUrl} alt="donerImg" width={100} height={100} />
         </span>
         <p>{donerName}</p>
       </li>

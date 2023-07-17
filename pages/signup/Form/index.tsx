@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import BottomButton from '../../../components/BottomButton';
 import styled from '@emotion/styled';
 import Header from '../../../components/Layout/Header';
