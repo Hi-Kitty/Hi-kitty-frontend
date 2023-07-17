@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { colors } from '../../../styles/colors';
 import commaNumber from '../../../utils/commaNumber';
 import convertDateYear from '../../../utils/convertDateYear';
-import ProgressBar from '../../ProgressBar';
+import ProgressBar from '../../../components/ProgressBar';
 
 interface HeadProps {
   imageUrl: string;
