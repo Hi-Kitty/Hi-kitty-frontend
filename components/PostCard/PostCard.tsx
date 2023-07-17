@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import { colors } from '../../styles/colors';
 import CardImg from './CardImg';
 import ProgressBar from '../ProgressBar';
-import Modal from 'react-modal';
 import { useState } from 'react';
 import { useGetBoard } from '../../api/모금자용-권한용-api/모금자용-권한용-api';
 import { useGetByEmail } from '../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
 import commaNumber from '../../utils/commaNumber';
 import convertDateYear from '../../utils/convertDateYear';
 import { PageImageGet } from '../../orval/model';
+import ModalComp from '../ModalComp';
 
 export default function PostCard({ list }: { list: PageImageGet }) {
   const { id, imageUrl, dday, title, fundraiserName, percent, fundraiserId } = list;
@@ -58,38 +58,7 @@ export default function PostCard({ list }: { list: PageImageGet }) {
       </ContainerWrapper>
 
       {modalIsOpen && (
-        <Modal
-          isOpen={true}
-          ariaHideApp={false}
-          onRequestClose={() => setModalIsOpen(false)}
-          style={{
-            overlay: {
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(255, 255, 255, 0.45)',
-              zIndex: 10,
-            },
-            content: {
-              display: 'flex',
-              justifyContent: 'center',
-              background: 'white',
-              overflow: 'auto',
-              width: '297px',
-              height: '191px',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              WebkitOverflowScrolling: 'touch',
-              borderRadius: '1px',
-              outline: 'none',
-              border: 'none',
-              zIndex: 10,
-            },
-          }}
-        >
+        <ModalComp isOpen={true} onRequestClose={() => setModalIsOpen(false)} width="270px" height="171px">
           <CheckContainer>
             <h3>모금내역확인</h3>
             <p>
@@ -98,7 +67,7 @@ export default function PostCard({ list }: { list: PageImageGet }) {
               <span>총 {commaNumber(Number(montlyAmount?.totalAmount))}원</span>
             </p>
           </CheckContainer>
-        </Modal>
+        </ModalComp>
       )}
     </>
   );
