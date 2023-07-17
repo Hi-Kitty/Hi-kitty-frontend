@@ -1,4 +1,3 @@
-//
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -9,6 +8,9 @@ import Input from '../../components/Input';
 import { onlyNumber } from '../../utils/onlyNumber';
 import commaNumber from '../../utils/commaNumber';
 import { useCreate1 } from '../../api/모금자용-권한용-api/모금자용-권한용-api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ImageUpload from './ImageUpload';
 
 const initialForm = {
   title: '',
@@ -25,14 +27,13 @@ export default function Write() {
   const [form, setForm] = useState(initialForm);
   const [showImages, setShowImages] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File>();
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (name === 'num' || name === 'amountNum') {
-      const processedValue = onlyNumber(value); // 숫자와 콤마만 남기는 처리
-      const numericValue = Number(processedValue.replace(/,/g, '')); // 콤마 제거 후 숫자로 변환
+      const processedValue = onlyNumber(value);
+      const numericValue = Number(processedValue.replace(/,/g, ''));
       if (!isNaN(numericValue)) {
         setForm({
           ...form,
@@ -72,24 +73,17 @@ export default function Write() {
   }, [form]);
 
   let imageUrlLists: string[] = [...showImages];
-
-  const handleAddImages = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    const imageLists = event.target.files;
-
-    if (!imageLists) return;
-    imageUrlLists.push(URL.createObjectURL(imageLists[0]));
-    setShowImages(imageUrlLists);
-
-    if (file) setImageFile(file);
-  };
-
   const handleDeleteImage = (index: number) => {
     imageUrlLists.splice(index, 1);
     setShowImages([...imageUrlLists]);
 
     const file = document.getElementById('file') as HTMLInputElement;
     file.value = '';
+  };
+
+  const handleImageChange = (file: File) => {
+    setShowImages([...showImages, URL.createObjectURL(file)]);
+    setImageFile(file);
   };
 
   const boardCreateMutate = useCreate1();
@@ -115,14 +109,12 @@ export default function Write() {
         ],
       },
     });
-    window.alert('글이 작성되었습니다.');
-    router.push('/fundraising');
-  };
-
-  const handleDefaultImage = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
-    }
+    toast.success('글이 작성되었습니다.', {
+      autoClose: 5000,
+    });
+    setTimeout(() => {
+      router.push('/fundraising');
+    }, 2000);
   };
 
   return (
@@ -138,28 +130,7 @@ export default function Write() {
         />
       </TopContainer>
       <Article>
-        <BackgroundImg
-          ref={inputRef}
-          type="file"
-          id="file"
-          accept="image/jpg, image/jpeg, image/png"
-          style={{ display: 'none' }}
-          onChange={handleAddImages}
-        />
-        <BackgroundImgReal
-          src="images/Camera.svg"
-          width={420}
-          height={300}
-          alt="cat-hungry"
-          onClick={handleDefaultImage}
-        />
-        {/* <BackgroundImg style={{ backgroundImage: `url('images/Cat-hungry.svg')` }}> */}
-        {showImages.map((image, id) => (
-          <UpImg key={id}>
-            <img src={image} alt={`${image}-${id}`} />
-            <span onClick={() => handleDeleteImage(id)}>X</span>
-          </UpImg>
-        ))}
+        <ImageUpload onChange={handleImageChange} images={showImages} onDelete={handleDeleteImage} />
         <TitleNameBox>
           <Input
             type={'text'}
@@ -173,6 +144,7 @@ export default function Write() {
           />
         </TitleNameBox>
       </Article>
+
       <DateAmountContainer>
         <DateAmountContent>
           <DateAmount>
@@ -234,10 +206,10 @@ export default function Write() {
         />
         <span>원</span>
       </PlanContainer>
-
       <ButtonBox>
         <BottomButton title={'작성하기'} width="100%" height="68px" opacity={0.95} disabled={!isSameAmount} />
       </ButtonBox>
+      <ToastContainer />
     </Container>
   );
 }
@@ -267,71 +239,6 @@ const Article = styled.div`
   position: relative;
   width: 100%;
   display: block;
-`;
-
-const BackgroundImg = styled.input`
-  background-size: cover;
-  background-position: center;
-  display: table;
-  width: 100%;
-  background-color: #666;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  table-layout: fixed;
-`;
-
-const BackgroundImgReal = styled(Image)`
-  background-size: cover;
-  background-color: #666;
-  background-position: center;
-  display: table;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  table-layout: fixed;
-`;
-
-const UpImg = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-
-  ::before {
-    content: '';
-    position: absolute;
-    background-color: rgba(30, 29, 41, 0.32);
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-  }
-
-  span {
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 140%;
-    padding-left: 4.5px;
-    background-color: rgba(30, 29, 41, 0.32);
-    border-radius: 50%;
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    cursor: pointer;
-    outline: none;
-    z-index: 20;
-  }
 `;
 
 const TitleNameBox = styled.div`
@@ -401,7 +308,6 @@ const DateAmount = styled.div`
     text-align: center;
   }
 
-  // 인풋에 입력할때 오른쪽에서부터 입력되게
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;

@@ -14,7 +14,7 @@ import DonorList from './DonorList';
 import Footer from '../../../components/Layout/Footer';
 import DonorListNone from './DonorListNone';
 import commaNumber from '../../../utils/commaNumber';
-import { useRouter } from 'next/router';
+import LogoutBox from '../LogoutBox';
 
 const PAGE_PARAM = {
   page: 0,
@@ -22,7 +22,6 @@ const PAGE_PARAM = {
 } as unknown as GetOrdersParams;
 
 export default function DonorMainProfile() {
-  const router = useRouter();
   const getUserInfoStatus = useGetByEmail();
   const getTotalCount = useGetTotals();
   const getOrders = useGetOrders(PAGE_PARAM);
@@ -30,11 +29,6 @@ export default function DonorMainProfile() {
   const userInfo = getUserInfoStatus.data?.response;
   const userTotalCount = getTotalCount.data?.response;
   const donorList = getOrders.data?.response?.content;
-
-  const handleLogout = (): void => {
-    localStorage.clear();
-    router.push('/login');
-  };
 
   return (
     <Container>
@@ -64,9 +58,7 @@ export default function DonorMainProfile() {
             ) : (
               <DonorListNone />
             )}
-            <Logout>
-              <p onClick={handleLogout}>로그아웃</p>
-            </Logout>
+            <LogoutBox />
           </DonationListWrapper>
         </DonorProfile>
       </ContentBox>
@@ -131,22 +123,4 @@ const HorizontalLine = styled.div`
   width: 100%;
   border-bottom: 1px solid #c4c4c4;
   margin-bottom: 29px;
-`;
-
-const Logout = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin: 103px 17px 62px 0;
-
-  p {
-    font-size: 14px;
-    font-weight: 500;
-    color: ${colors.gray800};
-    cursor: pointer;
-
-    &:hover {
-      color: ${colors.black};
-      transition: color 0.1s ease-in-out;
-    }
-  }
 `;

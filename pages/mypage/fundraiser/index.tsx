@@ -7,9 +7,9 @@ import { useGetByEmail } from '../../../api/인증-인가-기부자-모금자-�
 import { useGetBoards } from '../../../api/모금자용-권한용-api/모금자용-권한용-api';
 import { GetBoardsParams, PageImageGet } from '../../../orval/model';
 import PostCard from '../../../components/PostCard/PostCard';
-import { useRouter } from 'next/router';
 import ProfileImg from '../../../components/ProfileImg';
 import ProfileInfo from '../../../components/ProfileInfo';
+import LogoutBox from '../LogoutBox';
 
 const PAGE_PARAM = {
   page: 0,
@@ -17,16 +17,10 @@ const PAGE_PARAM = {
 } as unknown as GetBoardsParams;
 
 export default function FundraiserMainProfile() {
-  const router = useRouter();
   const getUserInfoStatus = useGetByEmail();
   const userInfo = getUserInfoStatus.data?.response;
   const getUserBoardStatus = useGetBoards(PAGE_PARAM);
   const userBoard = getUserBoardStatus.data?.response?.content;
-
-  const handleLogout = (): void => {
-    localStorage.clear();
-    router.push('/login');
-  };
 
   return (
     <Container>
@@ -48,9 +42,7 @@ export default function FundraiserMainProfile() {
           ))}
         </>
       )}
-      <Logout>
-        <p onClick={handleLogout}>로그아웃</p>
-      </Logout>
+      <LogoutBox />
       <Footer />
     </Container>
   );
@@ -78,22 +70,4 @@ const DonationMsg = styled.div`
   color: #29292e;
   white-space: pre-wrap;
   letter-spacing: -0.072px;
-`;
-
-const Logout = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin: 103px 17px 62px 0;
-
-  p {
-    font-size: 14px;
-    font-weight: 500;
-    color: ${colors.gray800};
-    cursor: pointer;
-
-    &:hover {
-      color: ${colors.black};
-      transition: color 0.1s ease-in-out;
-    }
-  }
 `;

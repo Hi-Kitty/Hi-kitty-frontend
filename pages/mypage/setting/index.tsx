@@ -11,6 +11,8 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { UserUpdateRequest } from '../../../orval/model';
 import { useRouter } from 'next/router';
 import Input from '../../../components/Input';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const initialForm = {
   name: '',
@@ -87,6 +89,9 @@ export default function Setting() {
         img: file,
       },
     });
+    if (updatePasswordMutate.isSuccess) {
+      toast.success('프로필이 수정되었습니다.');
+    } else if (updatePasswordMutate.isError) toast.error('비밀번호를 확인해주세요.');
   };
 
   const handleUploadButtonClick = () => {
@@ -149,6 +154,7 @@ export default function Setting() {
         </ProfileModifyInfo>
         <BottomButton title={'저장하기'} borderRadius="8px" />
       </ProfileModifyWrapper>
+      <ToastContainer />
     </Container>
   );
 }
