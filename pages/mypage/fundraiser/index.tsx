@@ -7,8 +7,8 @@ import { useGetByEmail } from '../../../api/인증-인가-기부자-모금자-�
 import { useGetBoards } from '../../../api/모금자용-권한용-api/모금자용-권한용-api';
 import { GetBoardsParams, PageImageGet } from '../../../orval/model';
 import PostCard from '../../../components/PostCard/PostCard';
-import ProfileImg from '../../../components/ProfileImg';
-import ProfileInfo from '../../../components/ProfileInfo';
+import ProfileImg from '../ProfileImg';
+import ProfileInfo from '../ProfileInfo';
 import LogoutBox from '../LogoutBox';
 
 const PAGE_PARAM = {

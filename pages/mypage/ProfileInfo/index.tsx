@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { colors } from '../../styles/colors';
-import Input from '../Input';
-import { useGetByEmail } from '../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
+import { colors } from '../../../styles/colors';
+import Input from '../../../components/Input';
+import { useGetByEmail } from '../../../api/인증-인가-기부자-모금자-공통-api/인증-인가-기부자-모금자-공통-api';
 
 interface UserProfileInfoProps {
   email: string;

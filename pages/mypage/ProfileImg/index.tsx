@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import ArrowBack from '../../public/images/ArrowBack.svg';
-import settingIcon from '../../public/images/settingIcon.svg';
-import { colors } from '../../styles/colors';
+import { colors } from '../../../styles/colors';
 
 interface ProfileImgProps {
   profileImgSrc?: string;
@@ -24,10 +22,10 @@ export default function ProfileImg({ profileImgSrc }: ProfileImgProps) {
     <Thumbnail>
       <ThumbnailList>
         <ImageWrapper onClick={handleGoBack}>
-          <Image src={ArrowBack} width={18} height={20} alt="previous" />
+          <Image src="/images/ArrowBack.svg" width={18} height={20} alt="previous" />
         </ImageWrapper>
         <ImageWrapper onClick={handleGoSetting}>
-          <Image src={settingIcon} width={18} height={18} alt="settings" />
+          <Image src="/images/settingIcon.svg" width={18} height={18} alt="settings" />
         </ImageWrapper>
       </ThumbnailList>
       {profileImgSrc && (
