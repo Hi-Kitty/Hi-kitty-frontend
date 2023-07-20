@@ -76,23 +76,19 @@ export default function Home() {
         <ImageBox src="/images/LandingImg.svg" alt="하이키티" width={100} height={100} />
       </FourthSection>
       <LastSection>
-        <h3>그누구도</h3>
-        <h3>예상못한</h3>
-        <h3>후원</h3>
-        <ImageBox
-          src="/images/HIkitty-white.svg"
-          alt="하이키티"
-          width={100}
-          height={100}
-          style={{ marginTop: '400px' }}
-        />
+        <Image src="/images/HIkitty-white.svg" alt="하이키티" width={100} height={100} style={{ marginTop: '200px' }} />
+        <h3>
+          하이키티에서
+          <br />
+          나만의 후원을 시작해보세요.
+        </h3>
         <BottomButton
           title={'하이키티로'}
           width="50%"
           height={'59px'}
           borderRadius="40px"
           onClick={handleMoveFundraising}
-          marginTop="100px"
+          marginTop="50px"
         />
       </LastSection>
 
@@ -103,7 +99,7 @@ export default function Home() {
 
 const Container = styled.div`
   flex-direction: column;
-  height: 3400px;
+  min-height: 3600px;
   justify-content: flex-start;
   background-color: ${colors.white};
 `;
@@ -252,20 +248,19 @@ const LastSection = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-  padding-left: 20px;
+  padding: 20px;
   background-color: ${colors.black};
-  min-height: 2324px;
+  min-height: 724px;
 
   img {
-    margin-top: 50px;
     width: 100%;
     height: 100%;
   }
 
   h3 {
-    margin-top: 400px;
+    margin-top: 40px;
     font-weight: 800;
-    font-size: 40px;
+    font-size: 25px;
     line-height: 160%;
     letter-spacing: -0.06em;
     color: ${colors.white};
