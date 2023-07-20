@@ -6,9 +6,12 @@ import { useRouter } from 'next/router';
 import Footer from '../components/Layout/Footer';
 import Carousel from './Landing/Carousel';
 import Image from 'next/image';
+import useScroll from '../utils/useScroll';
+import { keyframes } from '@emotion/react';
 
 export default function Home() {
   const router = useRouter();
+  const { scrollY } = useScroll();
 
   const handleMoveFundraising = () => {
     router.push('/fundraising');
@@ -46,11 +49,11 @@ export default function Home() {
         <ImageBox src="/images/Phone.png" alt="하이키티" width={100} height={100} />
       </SecondSection>
       <ThirdSection>
-        <h3>지금까지 본 적 없었던</h3>
+        <h3 className={scrollY > 200 ? 'on' : 'off'}>지금까지 본 적 없었던</h3>
         {/* <br /> */}
-        <h3>투명한 개인 도네이션 서비스</h3>
+        <h3 className={scrollY > 200 ? 'on' : 'off'}>투명한 개인 도네이션 서비스</h3>
       </ThirdSection>
-      <FifthSection>
+      <FifthSection className={scrollY > 800 ? 'on' : 'off'}>
         <h3>협력 단체</h3>
         <Carousel
           banners={[
@@ -63,21 +66,34 @@ export default function Home() {
         />
       </FifthSection>
       <FourthSection>
-        <h3>
+        <h3 className={scrollY > 1220 ? 'on' : 'off'}>
           <span>하이키티</span>가
           <br />
           <span>키치</span>한 이유
         </h3>
-        <TextBox>
+        <TextBox className={scrollY > 1220 ? 'on' : 'off'}>
           <p>모금 시작부터 끝까지 기록해요.</p>
           <br />
           <p>소액기부도 좋아요.</p>
         </TextBox>
-        <ImageBox src="/images/LandingImg.svg" alt="하이키티" width={100} height={100} />
+        <ImageBox
+          className={scrollY > 1220 ? 'on' : 'off'}
+          src="/images/LandingImg.svg"
+          alt="하이키티"
+          width={100}
+          height={100}
+        />
       </FourthSection>
       <LastSection>
-        <Image src="/images/HIkitty-white.svg" alt="하이키티" width={100} height={100} style={{ marginTop: '200px' }} />
-        <h3>
+        <ImageBox
+          className={scrollY > 2170 ? 'on' : 'off'}
+          src="/images/HIkitty-white.svg"
+          alt="하이키티"
+          width={100}
+          height={100}
+          style={{ marginTop: '200px' }}
+        />
+        <h3 className={scrollY > 2170 ? 'on' : 'off'}>
           하이키티에서
           <br />
           나만의 후원을 시작해보세요.
@@ -96,6 +112,16 @@ export default function Home() {
     </Container>
   );
 }
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translate3d(0px, 50px, 0px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const Container = styled.div`
   flex-direction: column;
@@ -156,12 +182,28 @@ const SecondSection = styled.div`
   -webkit-box-pack: end;
   justify-content: flex-end;
   width: 100%;
+
+  &.on {
+    animation: ${fadeInUp} 1.5s ease-in-out;
+  }
+
+  &.off {
+    opacity: 0;
+  }
 `;
 
 const ImageBox = styled.img`
   margin-top: 150px;
   width: 90%;
   height: 100%;
+
+  &.on {
+    animation: 0.5s ease-in-out 1s 1 normal forwards running ${fadeInUp};
+  }
+
+  &.off {
+    opacity: 0;
+  }
 `;
 
 const ThirdSection = styled.div`
@@ -181,6 +223,13 @@ const ThirdSection = styled.div`
     line-height: 1.5;
     letter-spacing: -0.06em;
     text-align: center;
+
+    &.on {
+      animation: ${fadeInUp} 1.5s ease-in-out;
+    }
+    &.off {
+      opacity: 0;
+    }
   }
 `;
 
@@ -201,6 +250,13 @@ const FourthSection = styled.div`
     font-size: 40px;
     line-height: 160%;
     letter-spacing: -0.06em;
+
+    &.on {
+      animation: 0.5s ease-in-out 0s 1 normal forwards running ${fadeInUp};
+    }
+    &.off {
+      opacity: 0;
+    }
   }
 
   span {
@@ -224,6 +280,13 @@ const TextBox = styled.div`
   p {
     margin-bottom: 20px;
   }
+
+  &.on {
+    animation: 0.5s ease-in-out 0s 1 normal forwards running ${fadeInUp};
+  }
+  &.off {
+    opacity: 0;
+  }
 `;
 
 const FifthSection = styled.div`
@@ -241,6 +304,14 @@ const FifthSection = styled.div`
     font-weight: 600;
     font-size: 25px;
     letter-spacing: -0.06em;
+  }
+
+  &.on {
+    animation: ${fadeInUp} 1.5s ease-in-out;
+  }
+
+  &.off {
+    opacity: 0;
   }
 `;
 
@@ -264,5 +335,12 @@ const LastSection = styled.div`
     line-height: 160%;
     letter-spacing: -0.06em;
     color: ${colors.white};
+    &.on {
+      animation: 0.5s ease-in-out 1.5s 1 normal forwards running ${fadeInUp};
+    }
+
+    &.off {
+      opacity: 0;
+    }
   }
 `;
