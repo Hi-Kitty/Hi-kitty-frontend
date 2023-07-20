@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 
 export default function Header() {
-  const router = useRouter();
-
   return (
     <Container>
       <LeftBox>

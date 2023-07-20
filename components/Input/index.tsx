@@ -3,7 +3,7 @@ import React, { HTMLInputTypeAttribute } from 'react';
 
 export interface InputProps {
   type: HTMLInputTypeAttribute;
-  name: string;
+  name?: string;
   placeholder?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,6 +12,8 @@ export interface InputProps {
   marginBottom?: string;
   defaultValue?: string;
   id?: string;
+  color?: string;
+  readOnly?: boolean;
 }
 
 export default function Input({ type, placeholder, value, onChange, ...props }: InputProps) {
@@ -27,6 +29,11 @@ const StyleInput = styled.input<InputProps>`
   border-bottom: 0.1rem solid #dcdce0;
   font-size: 16px;
   background-color: transparent;
+  color: ${({ color }) => color ?? '#000000'};
+
+  :read-only {
+    border-bottom: 0.1rem solid #000000;
+  }
 
   ::placeholder {
     color: #dcdce0;

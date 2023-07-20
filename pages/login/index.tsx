@@ -5,27 +5,46 @@ import Header from '../../components/Layout/Header';
 import Input from '../../components/Input';
 import BottomButton from '../../components/BottomButton';
 import { useState } from 'react';
-import { css } from '@emotion/react';
+import { saveAccessTokenToLocalStorage } from '../../utils/accessTokenHandler';
+import { useLogin } from '../../orval/api/유저-기부자-모금자-공통-api/유저-기부자-모금자-공통-api';
 
 export default function Login() {
   const [userid, setUserId] = useState({ value: '', text: '', hidden: true });
   const [userPassword, setUserPassword] = useState({ value: '', text: '', hidden: true });
   const router = useRouter();
 
-  const checkUserId = (value: string) => {
+  const checkInput = (value: string, field: any) => {
     if (value.length === 0 || value === '') {
-      setUserId({ value: value, text: '이메일을 입력해주세요.', hidden: false });
-      return;
+      field({ value, text: `${field === setUserId ? '이메일을' : '비밀번호를'} 입력해주세요.`, hidden: false });
+    } else {
+      field({ value, text: '', hidden: true });
     }
-    setUserId({ value: value, text: '', hidden: true });
   };
 
-  const checkUserPassword = (value: string) => {
-    if (value.length === 0 || value === '') {
-      setUserPassword({ value: value, text: '비밀번호를 입력해주세요.', hidden: false });
-      return;
-    }
-    setUserPassword({ value: value, text: '', hidden: true });
+  const isButtonDisabled = !(userid.value && userPassword.value);
+
+  const loginMutate = useLogin();
+
+  const handleLogin = () => {
+    loginMutate.mutate(
+      {
+        data: {
+          email: userid.value,
+          password: userPassword.value,
+        },
+      },
+      {
+        onSuccess: ({ response }) => {
+          const accessToken = response?.token;
+          if (accessToken) saveAccessTokenToLocalStorage(accessToken);
+          router.push('/fundraising');
+        },
+      }
+    );
+  };
+
+  const handleSignup = () => {
+    router.push('/signup');
   };
 
   return (
@@ -36,14 +55,14 @@ export default function Login() {
           <Content>
             <KittyLogo>HI KITTY</KittyLogo>
             <InputBox>
-              <TitleName style={{ color: !userid.hidden ? 'red' : 'black' }}>이메일 주소</TitleName>
+              <TitleName style={{ color: !userid.hidden ? colors.red400 : colors.black }}>이메일 주소</TitleName>
               <InputItem>
                 <Input
                   id="id"
                   type={'text'}
                   placeholder={'예) kitty@kitty.co.kr'}
                   name="email"
-                  onChange={e => checkUserId(e.target.value)}
+                  onChange={e => checkInput(e.target.value, setUserId)}
                 />
               </InputItem>
               <ErrorMsg>
@@ -51,13 +70,13 @@ export default function Login() {
               </ErrorMsg>
             </InputBox>
             <InputBox>
-              <TitleName style={{ color: !userPassword.hidden ? 'red' : 'black' }}>비밀번호</TitleName>
+              <TitleName style={{ color: !userPassword.hidden ? colors.red400 : colors.black }}>비밀번호</TitleName>
               <InputItem>
                 <Input
                   id="password"
                   type={'password'}
                   name="password"
-                  onChange={e => checkUserPassword(e.target.value)}
+                  onChange={e => checkInput(e.target.value, setUserPassword)}
                 />
               </InputItem>
               <ErrorMsg>
@@ -65,10 +84,10 @@ export default function Login() {
               </ErrorMsg>
             </InputBox>
           </Content>
-          <BottomButton title={'로그인'} borderRadius="8px" />
+          <BottomButton title={'로그인'} borderRadius="8px" disabled={isButtonDisabled} onClick={handleLogin} />
           <SignupBox>
             <span>아직 회원이 아니신가요?</span>
-            <span onClick={() => router.push('/signup')}>회원가입</span>
+            <span onClick={handleSignup}>회원가입</span>
           </SignupBox>
         </ContentWrapper>
       </Container>
