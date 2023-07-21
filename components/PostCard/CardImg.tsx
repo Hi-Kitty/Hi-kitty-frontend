@@ -8,7 +8,7 @@ interface ImgProps {
 export default function CardImg({ imgUrl }: ImgProps) {
   return (
     <CardBox borderRadius={'20px'}>
-      <img src={imgUrl} />
+      <img src={imgUrl} alt="img" />
     </CardBox>
   );
 }
