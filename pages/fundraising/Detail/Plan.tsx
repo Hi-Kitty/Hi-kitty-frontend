@@ -1,7 +1,12 @@
 import styled from '@emotion/styled';
 import commaNumber from '../../../utils/commaNumber';
 
-export default function Plan({ reason, amount }: { reason: string; amount: number }) {
+interface PlanProps {
+  reason?: string;
+  amount?: number;
+}
+
+export default function Plan({ reason = '', amount = 0 }: PlanProps) {
   const trimmedReason = reason.length < 24 ? reason : reason.slice(0, 25) + '...';
 
   return (

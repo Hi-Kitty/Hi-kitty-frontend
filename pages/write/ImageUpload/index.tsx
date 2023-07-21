@@ -4,11 +4,11 @@ import Image from 'next/image';
 
 interface ImageUploadProps {
   onChange: (file: File) => void;
-  images: string[];
+  images?: string[];
   onDelete: (index: number) => void;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, images, onDelete }) => {
+export default function ImageUpload({ onChange, images, onDelete }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleAddImages = (event: ChangeEvent<HTMLInputElement>) => {
@@ -42,15 +42,17 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, images, onDelete })
         alt="cat-hungry"
         onClick={handleDefaultImage}
       />
-      {images.map((image, id) => (
-        <UpImg key={id}>
-          <Image src={image} alt={`${image}-${id}`} width={100} height={100} />
-          <span onClick={() => onDelete(id)}>X</span>
-        </UpImg>
-      ))}
+      {images &&
+        images.length > 0 &&
+        images.map((image, id) => (
+          <UpImg key={id}>
+            <Image src={image} alt={`${image}-${id}`} width={100} height={100} />
+            <span onClick={() => onDelete(id)}>X</span>
+          </UpImg>
+        ))}
     </>
   );
-};
+}
 
 const BackgroundImg = styled.input`
   background-size: cover;
@@ -116,5 +118,3 @@ const UpImg = styled.div`
     z-index: 20;
   }
 `;
-
-export default ImageUpload;
