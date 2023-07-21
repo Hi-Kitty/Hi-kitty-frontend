@@ -18,7 +18,8 @@ import { useGetBoard1 } from '../../../orval/api/게시판-조회-api/게시판-
 import { HeartResponse } from '../../../orval/model/heartResponse';
 import { PlanResponse } from '../../../orval/model/planResponse';
 import ModalComp from '../../../components/ModalComp';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import DonateModal from '../Detail/DonateModal';
 
 const initialForm = {
@@ -42,8 +43,14 @@ export default function Detail() {
   const [form, setForm] = useState(initialForm);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const showAnswer = () => {
-    setModalIsOpen(!modalIsOpen);
+
+  const showAnswer = (e: React.MouseEvent) => {
+    if (!!userInfo) {
+      setModalIsOpen(!modalIsOpen);
+    } else {
+      e.preventDefault();
+      toast.error('로그인이 필요합니다.');
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -187,7 +194,7 @@ export default function Detail() {
               opacity={0.95}
               onClick={e => {
                 e.stopPropagation();
-                showAnswer();
+                showAnswer(e);
               }}
             />
           </ButtonBox>
@@ -208,6 +215,7 @@ export default function Detail() {
           />
         </ModalComp>
       )}
+      <ToastContainer />
     </Container>
   );
 }
